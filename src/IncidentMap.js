@@ -1,5 +1,5 @@
 import React from "react";
-import marker from "./marker.svg"
+import marker from "./marker.svg";
 import GoogleMapReact from "google-map-react";
 
 const EventMarker = ({ text }) => (
@@ -12,7 +12,13 @@ const EventMarker = ({ text }) => (
       transform: "translate(-50%, -50%)"
     }}
   >
-    <img src={marker} className="App-logo" alt="marker" width="48px" height="48px" />
+    <img
+      src={marker}
+      className="App-logo"
+      alt="marker"
+      width="48px"
+      height="48px"
+    />
   </div>
 );
 
@@ -36,19 +42,15 @@ class IncidentMap extends React.Component {
   componentDidMount() {
     fetch(process.env.REACT_APP_EVENT_API)
       .then(response => response.json())
-      .then(data => this.setState({ events: data.events.map(event => {
-        const {name, lat, lng} = event;
-  
-        return (
-          <EventMarker
-          lat={lat}
-          lng={lng}
-          text={name}
-          />
-        );
-      }
+      .then(data =>
+        this.setState({
+          events: data.events.map(event => {
+            const { name, lat, lng } = event;
 
-      ) }));
+            return <EventMarker lat={lat} lng={lng} text={name} />;
+          })
+        })
+      );
   }
 
   render() {
@@ -60,7 +62,6 @@ class IncidentMap extends React.Component {
         defaultCenter={this.props.center}
         defaultZoom={this.props.zoom}
       >
-
         {events}
       </GoogleMapReact>
     );
