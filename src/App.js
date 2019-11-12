@@ -4,7 +4,7 @@ import IncidentMap from "./IncidentMap";
 
 function App() {
   return (
-    <div className="App" style={{ width: "100%", height: "800px" }}>
+    <div className="App">
       <IncidentMap />
     </div>
   );
