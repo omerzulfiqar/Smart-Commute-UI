@@ -7,7 +7,6 @@ const InfoWindow = props => {
   const { event } = props;
   const infoWindowStyle = {
     position: "relative",
-    bottom: 120,
     left: "-45px",
     width: 220,
     backgroundColor: "white",
