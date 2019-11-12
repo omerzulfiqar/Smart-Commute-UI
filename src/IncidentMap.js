@@ -5,7 +5,6 @@ import GoogleMapReact from "google-map-react";
 const EventMarker = ({ text }) => (
   <div
     style={{
-      padding: "15px 10px",
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
@@ -14,10 +13,10 @@ const EventMarker = ({ text }) => (
   >
     <img
       src={marker}
-      className="App-logo"
+      className="maker"
       alt="marker"
-      width="48px"
-      height="48px"
+      width="32px"
+      height="32px"
     />
   </div>
 );
