@@ -34,8 +34,6 @@ const EventMarker = props => {
   const markerStyle = {
     display: "inline-flex",
     alignItems: "center",
-    height: 10,
-    width: 10,
     justifyContent: "center",
     transform: "translate(-50%, -50%)"
   };
@@ -63,8 +61,6 @@ class IncidentMap extends React.Component {
       lng: -74.0466891
     },
     zoom: 11,
-    map: null,
-    maps: null
   };
 
   constructor(props) {
