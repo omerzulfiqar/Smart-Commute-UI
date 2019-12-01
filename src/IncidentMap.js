@@ -1,58 +1,6 @@
-import React, { Fragment } from "react";
-import marker from "./marker.svg";
-import twitter from "./ic_twitter.svg";
+import React from "react";
 import GoogleMapReact from "google-map-react";
-
-const InfoWindow = props => {
-  const { event } = props;
-  const infoWindowStyle = {
-    position: "relative",
-    left: "-45px",
-    width: 220,
-    backgroundColor: "white",
-    boxShadow: "0 2px 7px 1px rgba(0, 0, 0, 0.3)",
-    alignItems: "left",
-    padding: 10,
-    fontSize: 14,
-    zIndex: 100
-  };
-
-  return (
-    <div style={infoWindowStyle}>
-      <img
-        src={twitter}
-        alt="twitter"
-        style={{ witdh: "32px", height: "32px", float: "left" }}
-      />
-      <div style={{ fontSize: 16 }}>{event.name}</div>
-      <div style={{ fontSize: 12, color: "grey" }}>{event.description}</div>
-    </div>
-  );
-};
-
-const EventMarker = props => {
-  const markerStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transform: "translate(-50%, -50%)"
-  };
-
-  return (
-    <Fragment>
-      <div style={markerStyle}>
-        <img
-          src={marker}
-          className="maker"
-          alt="marker"
-          width="32px"
-          height="32px"
-        />
-      </div>
-      {props.show && <InfoWindow event={props.event} />}
-    </Fragment>
-  );
-};
+import TwitterHoverMarker from "./TwitterHoverMarker";
 
 class IncidentMap extends React.Component {
   static defaultProps = {
@@ -60,7 +8,7 @@ class IncidentMap extends React.Component {
       lat: 40.6892494,
       lng: -74.0466891
     },
-    zoom: 11,
+    zoom: 11
   };
 
   constructor(props) {
@@ -113,9 +61,10 @@ class IncidentMap extends React.Component {
         defaultZoom={this.props.zoom}
         onChildMouseEnter={this.onChildMouseEnter}
         onChildClick={this.onChildClick}
+        hoverDistance={15}
       >
         {events.map(event => (
-          <EventMarker
+          <TwitterHoverMarker
             key={event.id}
             lat={event.lat}
             lng={event.lng}
