@@ -5,30 +5,35 @@ const InfoWindow = props => {
   const { event } = props;
   const infoWindowStyle = {
     position: "relative",
-    left: "-45px",
+    left: "-110px",
+    borderRadius: "5px",
     width: 220,
-    backgroundColor: "white",
+    backgroundColor: "#333333",
     boxShadow: "0 2px 7px 1px rgba(0, 0, 0, 0.3)",
-    alignItems: "left",
+    alignItems: "center",
     padding: 10,
+    paddingBottom: 15,
     fontSize: 14,
     zIndex: 100
   };
 
   return (
     <div style={infoWindowStyle}>
-      <img
-        src={twitter}
-        alt="twitter"
-        style={{ witdh: "32px", height: "32px", float: "left" }}
-      />
-      <div style={{ fontSize: 16 }}>{event.name}</div>
-      <div style={{ fontSize: 12, color: "grey" }}>{event.description}</div>
+      <div style={{ fontSize: 18, color: "white", lineHeight: "1.5" }}>{event.name}</div>
+      <div style={{ fontSize: 12, color: "#969696" }}>{event.description}</div>
     </div>
   );
 };
 
 export default class TwitterHoverMarker extends Component {
+  isPWA() {
+    return (window.matchMedia('(display-mode: standalone)').matches);
+  }
+
+  showInfoWindow() {
+    return this.isPWA() ? this.props.lock : this.props.show;
+  }
+
   render() {
     const markerStyle = {
       display: "inline-flex",
@@ -59,7 +64,7 @@ export default class TwitterHoverMarker extends Component {
             alt="marker"
           />
         </div>
-        {this.props.show && <InfoWindow event={this.props.event} />}
+        {this.showInfoWindow() && <InfoWindow event={this.props.event} />}
       </Fragment>
     );
   }

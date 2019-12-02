@@ -27,8 +27,25 @@ class IncidentMap extends React.Component {
 
   onChildClick = key => {
     this.setState(state => {
+      state.events.forEach( event => {
+        event.lock = event.id === key ? !event.lock: false;
+      })
+      return { events: state.events };
+    });
+  };
+
+  onChildMouseEnter = key => {
+    this.setState(state => {
       const index = state.events.findIndex(e => e.id === key);
-      state.events[index].show = !state.events[index].show;
+      state.events[index].show = true;
+      return { events: state.events };
+    });
+  };
+
+  onChildMouseLeave = key => {
+    this.setState(state => {
+      const index = state.events.findIndex(e => e.id === key);
+      state.events[index].show = false;
       return { events: state.events };
     });
   };
@@ -41,6 +58,7 @@ class IncidentMap extends React.Component {
       .then(data => {
         data.events.forEach(result => {
           result.show = false;
+          result.lock = false;
         });
         this.setState({ events: data.events });
       });
@@ -60,6 +78,7 @@ class IncidentMap extends React.Component {
         defaultCenter={this.props.center}
         defaultZoom={this.props.zoom}
         onChildMouseEnter={this.onChildMouseEnter}
+        onChildMouseLeave={this.onChildMouseLeave}
         onChildClick={this.onChildClick}
         hoverDistance={15}
       >
@@ -69,6 +88,7 @@ class IncidentMap extends React.Component {
             lat={event.lat}
             lng={event.lng}
             show={event.show}
+            lock={event.lock}
             event={event}
           />
         ))}
