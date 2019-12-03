@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
 import TwitterHoverMarker from "./TwitterHoverMarker";
 
-class IncidentMap extends React.Component {
+class IncidentMap extends Component {
   static defaultProps = {
     center: {
       lat: 40.6892494,
@@ -15,7 +15,6 @@ class IncidentMap extends React.Component {
     super(props);
 
     this.state = {
-      events: [],
       width: 0,
       height: 0
     };
@@ -26,42 +25,23 @@ class IncidentMap extends React.Component {
   };
 
   onChildClick = key => {
-    this.setState(state => {
-      state.events.forEach( event => {
-        event.lock = event.id === key ? !event.lock: false;
-      })
-      return { events: state.events };
+    this.props.events.forEach(event => {
+      event.lock = event.id === key ? !event.lock : false;
     });
   };
 
   onChildMouseEnter = key => {
-    this.setState(state => {
-      const index = state.events.findIndex(e => e.id === key);
-      state.events[index].show = true;
-      return { events: state.events };
-    });
+    const index = this.props.events.findIndex(e => e.id === key);
+    this.props.events[index].show = true;
   };
 
   onChildMouseLeave = key => {
-    this.setState(state => {
-      const index = state.events.findIndex(e => e.id === key);
-      state.events[index].show = false;
-      return { events: state.events };
-    });
+    const index = this.props.events.findIndex(e => e.id === key);
+    this.props.events[index].show = false;
   };
 
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
-
-    fetch(process.env.REACT_APP_EVENT_API)
-      .then(response => response.json())
-      .then(data => {
-        data.events.forEach(result => {
-          result.show = false;
-          result.lock = false;
-        });
-        this.setState({ events: data.events });
-      });
   }
 
   componentWillUnmount() {
@@ -69,8 +49,6 @@ class IncidentMap extends React.Component {
   }
 
   render() {
-    const { events } = this.state;
-
     return (
       <GoogleMapReact
         style={{ width: "100%", height: this.state.height }}
@@ -82,13 +60,11 @@ class IncidentMap extends React.Component {
         onChildClick={this.onChildClick}
         hoverDistance={15}
       >
-        {events.map(event => (
+        {this.props.events.map(event => (
           <TwitterHoverMarker
             key={event.id}
             lat={event.lat}
             lng={event.lng}
-            show={event.show}
-            lock={event.lock}
             event={event}
           />
         ))}

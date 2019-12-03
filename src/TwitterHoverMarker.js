@@ -19,7 +19,9 @@ const InfoWindow = props => {
 
   return (
     <div style={infoWindowStyle}>
-      <div style={{ fontSize: 18, color: "white", lineHeight: "1.5" }}>{event.name}</div>
+      <div style={{ fontSize: 18, color: "white", lineHeight: "1.5" }}>
+        {event.name}
+      </div>
       <div style={{ fontSize: 12, color: "#969696" }}>{event.description}</div>
     </div>
   );
@@ -27,11 +29,11 @@ const InfoWindow = props => {
 
 export default class TwitterHoverMarker extends Component {
   isPWA() {
-    return (window.matchMedia('(display-mode: standalone)').matches);
+    return window.matchMedia("(display-mode: standalone)").matches;
   }
 
   showInfoWindow() {
-    return this.isPWA() ? this.props.lock : this.props.show;
+    return this.isPWA() ? this.props.event.lock : this.props.event.show;
   }
 
   render() {

@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
-import IncidentMap from "./IncidentMap";
+import MainPage from "./MainPage";
 
 function App() {
   return (
     <div className="App">
-      <IncidentMap />
+      <MainPage />
     </div>
   );
 }
