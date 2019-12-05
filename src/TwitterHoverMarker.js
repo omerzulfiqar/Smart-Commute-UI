@@ -4,6 +4,7 @@ import twitter from "./ic_twitter.svg";
 const InfoWindow = props => {
   const { event } = props;
   const infoWindowStyle = {
+    display: "flex",
     position: "relative",
     left: "-110px",
     borderRadius: "5px",
@@ -19,9 +20,6 @@ const InfoWindow = props => {
 
   return (
     <div style={infoWindowStyle}>
-      <div style={{ fontSize: 18, color: "white", lineHeight: "1.5" }}>
-        {event.name}
-      </div>
       <div style={{ fontSize: 12, color: "#969696" }}>{event.description}</div>
     </div>
   );
@@ -54,7 +52,12 @@ export default class TwitterHoverMarker extends Component {
       height: "48px"
     };
 
-    const markerstyle = this.props.$hover ? imageHoverStyle : imageStyle;
+    const invisibleStyle = {
+      width: "0px",
+      height: "0px"
+    }
+
+    const markerstyle = !this.props.event.visible ? invisibleStyle : this.props.$hover ? imageHoverStyle : imageStyle;
 
     return (
       <Fragment>

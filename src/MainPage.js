@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import IncidentMap from "./IncidentMap";
+import IncidentTypeWindow from "./IncidentTypeWindow";
 
 class MainPage extends Component {
   constructor(props) {
@@ -17,13 +18,19 @@ class MainPage extends Component {
         data.events.forEach(result => {
           result.show = false;
           result.lock = false;
+          result.visible = true;
         });
         this.setState({ events: data.events });
       });
   }
 
   render() {
-    return <IncidentMap events={this.state.events} />;
+    return (
+      <div>
+        <IncidentTypeWindow events={this.state.events}/>
+        <IncidentMap events={this.state.events} />
+      </div>
+    );
   }
 }
 
