@@ -29,7 +29,7 @@ export default class IncidentTypeWindow extends Component {
     };
 
     return (
-      <Menu vertical style={menuStyle}>
+      <Menu vertical size="large" style={menuStyle}>
         <Menu.Item
           name="All"
           active={this.state.activeItem === "All"}
