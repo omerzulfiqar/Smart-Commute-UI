@@ -1,5 +1,9 @@
 import React, { Fragment, Component } from "react";
 import twitter from "./ic_twitter.svg";
+import roadwork from "./road-work.svg";
+import event from "./event.svg";
+import roadclosure from "./road-closure.svg";
+import accident from "./accident.png";
 
 const InfoWindow = props => {
   const { event } = props;
@@ -31,7 +35,23 @@ export default class TwitterHoverMarker extends Component {
   }
 
   showInfoWindow() {
+    if (!this.props.event.visible) return false;
     return this.isPWA() ? this.props.event.lock : this.props.event.show;
+  }
+
+  getIcon() {
+    switch (this.props.event.category) {
+      case "RoadWork/Construction":
+        return roadwork;
+      case "Event":
+        return event;
+      case "Road Closure":
+        return roadclosure;
+      case "Incident/Accident":
+        return accident;
+      default:
+        return twitter;
+    }
   }
 
   render() {
@@ -43,28 +63,33 @@ export default class TwitterHoverMarker extends Component {
     };
 
     const imageStyle = {
+      visibility: "visible",
       width: "32px",
       height: "32px"
     };
 
     const imageHoverStyle = {
+      visibility: "visible",
       width: "48px",
       height: "48px"
     };
 
     const invisibleStyle = {
-      width: "0px",
-      height: "0px"
-    }
+      visibility: "hidden"
+    };
 
-    const markerstyle = !this.props.event.visible ? invisibleStyle : this.props.$hover ? imageHoverStyle : imageStyle;
+    const markerstyle = !this.props.event.visible
+      ? invisibleStyle
+      : this.props.$hover
+      ? imageHoverStyle
+      : imageStyle;
 
     return (
       <Fragment>
         <div style={markerStyle}>
           <img
             style={markerstyle}
-            src={twitter}
+            src={this.getIcon()}
             className="maker"
             alt="marker"
           />
