@@ -27,7 +27,7 @@ class MainPage extends Component {
   render() {
     return (
       <div>
-        <IncidentTypeWindow events={this.state.events}/>
+        <IncidentTypeWindow events={this.state.events} onUpdate={ events => this.setState( {events: events})}/>
         <IncidentMap events={this.state.events} />
       </div>
     );

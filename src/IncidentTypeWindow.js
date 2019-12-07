@@ -11,6 +11,7 @@ export default class IncidentTypeWindow extends Component {
 
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
+    
     this.props.events.forEach(event => {
       if (name === "All") {
         event.visible = true;
@@ -18,6 +19,7 @@ export default class IncidentTypeWindow extends Component {
         event.visible = event.category === name ? true : false;
       }
     });
+    this.props.onUpdate(this.props.events);
   };
 
   render() {
