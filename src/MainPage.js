@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import IncidentMap from "./IncidentMap";
 import IncidentTypeWindow from "./IncidentTypeWindow";
+import MobileIncidentTypeWindow from "./MobileIncidentTypeWindow";
+import isMobile from "ismobilejs";
+import IncidentList from "./IncidentList";
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      events: []
+      events: [],
+      mobileShowList: false
     };
   }
 
@@ -22,13 +26,39 @@ class MainPage extends Component {
         });
         this.setState({ events: data.events });
       });
+    console.log(typeof isMobile(navigator.userAgent).any);
   }
+
+  onListClick = () => {
+    this.setState({ mobileShowList: !this.state.mobileShowList });
+  };
+
+  onListClose = () => {
+    this.setState({ mobileShowList: false });
+  };
 
   render() {
     return (
       <div>
-        <IncidentTypeWindow events={this.state.events} onUpdate={ events => this.setState( {events: events})}/>
+        {isMobile(navigator.userAgent).any ? (
+          <MobileIncidentTypeWindow
+            events={this.state.events}
+            onUpdate={events => this.setState({ events: events })}
+            onListClick={this.onListClick}
+          />
+        ) : (
+          <IncidentTypeWindow
+            events={this.state.events}
+            onUpdate={events => this.setState({ events: events })}
+          />
+        )}
         <IncidentMap events={this.state.events} />
+        {this.state.mobileShowList && (
+          <IncidentList
+            events={this.state.events}
+            onListClose={this.onListClose}
+          />
+        )}
       </div>
     );
   }

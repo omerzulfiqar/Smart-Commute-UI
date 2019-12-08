@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu, Label, MenuItem, List } from "semantic-ui-react";
+import { Menu, Label, Dropdown, DropdownMenu } from "semantic-ui-react";
 
 export default class IncidentTypeWindow extends Component {
   constructor(props) {
@@ -32,47 +32,36 @@ export default class IncidentTypeWindow extends Component {
     );
   }
 
+  handleListItemClick = () => {
+    this.props.onListClick();
+  };
+
   render() {
     const menuStyle = {
       position: "fixed",
       top: "10px",
       left: "10px",
-      zIndex: "10000000000",
-      bottom: "10px"
-    };
-
-    const listStyle = {
-      overflowY: "scroll",
-      overflowX: "hidden",
-      height: this.getListHeight(),
-      marginTop: 10,
-      marginBottom: 10
-    };
-
-    const iconStyle = {
-      float: "left"
-    };
-
-    const contentStyle = {
-      float: "right",
-      width: "250px"
+      zIndex: "10000000000"
     };
 
     return (
-      <Menu vertical size="massive" style={menuStyle} id="menu">
-        <MenuItem id="filter">
-          Filter
-          <Menu.Menu>
-            <Menu.Item
+      <Menu compact style={menuStyle}>
+        <Dropdown item icon="filter">
+          <DropdownMenu>
+            <Dropdown.Header
+              icon="tags"
+              content="Filter by incident category"
+            />
+            <Dropdown.Item
               name="All"
               active={this.state.activeItem === "All"}
               onClick={this.handleItemClick}
             >
               <Label>{this.props.events.length}</Label>
               All
-            </Menu.Item>
+            </Dropdown.Item>
 
-            <Menu.Item
+            <Dropdown.Item
               name="Event"
               active={this.state.activeItem === "Event"}
               onClick={this.handleItemClick}
@@ -84,9 +73,9 @@ export default class IncidentTypeWindow extends Component {
                 }
               </Label>
               Event
-            </Menu.Item>
+            </Dropdown.Item>
 
-            <Menu.Item
+            <Dropdown.Item
               name="Incident/Accident"
               active={this.state.activeItem === "Incident/Accident"}
               onClick={this.handleItemClick}
@@ -99,9 +88,9 @@ export default class IncidentTypeWindow extends Component {
                 }
               </Label>
               Incident/Accident
-            </Menu.Item>
+            </Dropdown.Item>
 
-            <Menu.Item
+            <Dropdown.Item
               name="RoadWork/Construction"
               active={this.state.activeItem === "RoadWork/Construction"}
               onClick={this.handleItemClick}
@@ -114,9 +103,9 @@ export default class IncidentTypeWindow extends Component {
                 }
               </Label>
               RoadWork/Construction
-            </Menu.Item>
+            </Dropdown.Item>
 
-            <Menu.Item
+            <Dropdown.Item
               name="Road Closure"
               active={this.state.activeItem === "Road Closure"}
               onClick={this.handleItemClick}
@@ -129,9 +118,9 @@ export default class IncidentTypeWindow extends Component {
                 }
               </Label>
               Road Closure
-            </Menu.Item>
+            </Dropdown.Item>
 
-            <Menu.Item
+            <Dropdown.Item
               name="Non Traffic Tweet"
               active={this.state.activeItem === "Non Traffic Tweet"}
               onClick={this.handleItemClick}
@@ -144,29 +133,11 @@ export default class IncidentTypeWindow extends Component {
                 }
               </Label>
               Non Traffic Tweet
-            </Menu.Item>
-          </Menu.Menu>
-        </MenuItem>
+            </Dropdown.Item>
+          </DropdownMenu>
+        </Dropdown>
 
-        <MenuItem>
-          Incidents list
-          <List selection style={listStyle}>
-            {this.props.events.map(event => (
-              event.visible ?
-              <List.Item key={event.id}>
-                <List.Icon
-                  style={iconStyle}
-                  name="marker"
-                  size="large"
-                  verticalAlign="middle"
-                />
-                <List.Description style={contentStyle}>
-                  {event.description}
-                </List.Description>
-              </List.Item> : null
-            ))}
-          </List>
-        </MenuItem>
+        <Menu.Item icon="list ul" onClick={this.handleListItemClick} />
       </Menu>
     );
   }
