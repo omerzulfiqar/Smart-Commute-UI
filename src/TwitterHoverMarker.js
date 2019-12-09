@@ -4,6 +4,7 @@ import roadwork from "./road-work.svg";
 import event from "./event.svg";
 import roadclosure from "./road-closure.svg";
 import accident from "./accident.png";
+import hazards from "./hazards.png";
 
 const InfoWindow = props => {
   const { event } = props;
@@ -48,6 +49,8 @@ export default class TwitterHoverMarker extends Component {
         return roadclosure;
       case "Incident/Accident":
         return accident;
+      case "Hazards":
+        return hazards;
       default:
         return twitter;
     }
