@@ -10,21 +10,20 @@ const InfoWindow = props => {
   const infoWindowStyle = {
     display: "flex",
     position: "relative",
-    left: "-110px",
+    left: -125,
     borderRadius: "5px",
-    width: 220,
-    backgroundColor: "#333333",
+    width: 250,
+    backgroundColor: "#FFFFFF",
     boxShadow: "0 2px 7px 1px rgba(0, 0, 0, 0.3)",
     alignItems: "center",
     padding: 10,
     paddingBottom: 15,
-    fontSize: 14,
     zIndex: 100
   };
 
   return (
     <div style={infoWindowStyle}>
-      <div style={{ fontSize: 12, color: "#969696" }}>{event.description}</div>
+      <div style={{ fontSize: 14, color: "#5b8b92" }}>{event.description}</div>
     </div>
   );
 };
