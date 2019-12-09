@@ -5,21 +5,16 @@ import TwitterHoverMarker from "./TwitterHoverMarker";
 class IncidentMap extends Component {
   static defaultProps = {
     center: {
-      lat: 40.6892494,
-      lng: -74.0466891
+      lat: 40.754973,
+      lng: -73.988301
     },
-    zoom: 11
+    zoom: 14
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      center: {
-        lat: 40.6892494,
-        lng: -74.0466891
-      },
-      zoom: 11,
       width: 0,
       height: 0
     };
@@ -27,10 +22,6 @@ class IncidentMap extends Component {
 
   updateDimensions = () => {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-  };
-
-  changeCenter = (lat, lng) => {
-    this.setState({ center: {lat: lat, lng: lng}})
   };
 
   onChildClick = key => {
@@ -62,10 +53,8 @@ class IncidentMap extends Component {
       <GoogleMapReact
         style={{ width: "100%", height: this.state.height }}
         bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
-        defaultCenter={this.state.center}
-        defaultZoom={this.state.zoom}
-        center={this.state.center}
-        zoom={this.state.zoom}
+        defaultCenter={this.props.center}
+        defaultZoom={this.props.zoom}
         onChildMouseEnter={this.onChildMouseEnter}
         onChildMouseLeave={this.onChildMouseLeave}
         onChildClick={this.onChildClick}
