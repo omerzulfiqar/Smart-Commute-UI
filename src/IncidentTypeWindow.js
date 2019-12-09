@@ -151,20 +151,27 @@ export default class IncidentTypeWindow extends Component {
         <MenuItem>
           Incidents list
           <List selection style={listStyle}>
-            {this.props.events.map(event => (
-              event.visible ?
-              <List.Item key={event.id}>
-                <List.Icon
-                  style={iconStyle}
-                  name="marker"
-                  size="large"
-                  verticalAlign="middle"
-                />
-                <List.Description style={contentStyle}>
-                  {event.description}
-                </List.Description>
-              </List.Item> : null
-            ))}
+            {this.props.events.map(event =>
+              event.visible ? (
+                <List.Item
+                  key={event.id}
+                  id={event.id}
+                  onClick={(event, data) => {
+                    this.props.onMarkerClick(data.id);
+                  }}
+                >
+                  <List.Icon
+                    style={iconStyle}
+                    name="marker"
+                    size="large"
+                    verticalAlign="middle"
+                  />
+                  <List.Description style={contentStyle}>
+                    {event.description}
+                  </List.Description>
+                </List.Item>
+              ) : null
+            )}
           </List>
         </MenuItem>
       </Menu>

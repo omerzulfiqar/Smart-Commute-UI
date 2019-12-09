@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Button } from "semantic-ui-react";
+import { List, Button, Header } from "semantic-ui-react";
 
 class IncidentList extends Component {
   constructor(props) {
@@ -24,40 +24,61 @@ class IncidentList extends Component {
   }
 
   handleCloseItemClick = () => {
-      this.props.onListClose();
-  }
+    this.props.onListClose();
+  };
 
   render() {
     const listStyle = {
       position: "absolute",
       zIndex: "10000000000",
-      overflowY: "scroll",
+      overflowY: "hidden",
       overflowX: "hidden",
-      background: "white",
+      background: "white"
     };
 
     const listContentStyle = {
-        paddingTop: 22,
-    }
+      paddingTop: 22,
+      paddingLeft: 15,
+      paddingRight: 15
+    };
+
+    const headerStyle = {
+      paddingTop: 10,
+      paddingLeft: 15,
+      margin: 0
+    };
 
     return (
       <div style={listStyle}>
-          <Button basic icon="close icon" floated="right" onClick={this.handleCloseItemClick}/>
-          <List selection style={listContentStyle} >
-            {this.props.events.map(event =>
-              event.visible ? (
-                <List.Item key={event.id}>
-                  <List.Icon
-                    name="marker"
-                    size="large"
-                    verticalAlign="middle"
-                  />
+        <Header size="medium" floated="left" style={headerStyle}>
+          Incident list
+        </Header>
+        <Button
+          basic
+          icon="close"
+          floated="right"
+          onClick={this.handleCloseItemClick}
+        />
+
+        <List selection style={listContentStyle}>
+          {this.props.events.map(event =>
+            event.visible ? (
+              <List.Item
+                key={event.id}
+                id={event.id}
+                onClick={(event, data) => {
+                  this.props.onMarkerClick(data.id);
+                }}
+              >
+                <List.Icon name="marker" size="large" verticalAlign="middle" />
+                <List.Content>
+                  <List.Header>{event.category}</List.Header>
                   <List.Description>{event.description}</List.Description>
-                </List.Item>
-              ) : null
-            )}
-          </List>
-        
+                </List.Content>
+              </List.Item>
+            ) : null
+          )}
+        </List>
       </div>
     );
   }

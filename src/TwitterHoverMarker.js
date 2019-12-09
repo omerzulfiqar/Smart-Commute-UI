@@ -80,7 +80,7 @@ export default class TwitterHoverMarker extends Component {
 
     const markerstyle = !this.props.event.visible
       ? invisibleStyle
-      : this.props.$hover
+      : this.props.$hover || this.props.event.forceHover
       ? imageHoverStyle
       : imageStyle;
 

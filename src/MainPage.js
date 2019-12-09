@@ -8,11 +8,11 @@ import IncidentList from "./IncidentList";
 class MainPage extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       events: [],
-      mobileShowList: false
+      mobileShowList: false,
     };
+    this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
   componentDidMount() {
@@ -23,19 +23,30 @@ class MainPage extends Component {
           result.show = false;
           result.lock = false;
           result.visible = true;
+          result.forceHover = false;
         });
         this.setState({ events: data.events });
       });
-    console.log(typeof isMobile(navigator.userAgent).any);
   }
 
   onListClick = () => {
-    this.setState({ mobileShowList: !this.state.mobileShowList });
+    this.setState({ mobileShowList: true });
   };
 
   onListClose = () => {
     this.setState({ mobileShowList: false });
   };
+
+  onMarkerClick(id) {
+    this.setState(state => {
+      state.events.forEach(event => {
+        event.lock = event.id === id ? !event.lock : false;
+        event.show = event.id === id ? !event.show : false;
+        event.forceHover = event.id === id ? !event.forceHover : false;
+      });
+      return { mobileShowList: false, events: state.events };
+    });
+  }
 
   render() {
     return (
@@ -49,6 +60,7 @@ class MainPage extends Component {
         ) : (
           <IncidentTypeWindow
             events={this.state.events}
+            onMarkerClick={this.onMarkerClick}
             onUpdate={events => this.setState({ events: events })}
           />
         )}
@@ -57,6 +69,7 @@ class MainPage extends Component {
           <IncidentList
             events={this.state.events}
             onListClose={this.onListClose}
+            onMarkerClick={this.onMarkerClick}
           />
         )}
       </div>
