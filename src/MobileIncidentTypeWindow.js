@@ -61,19 +61,7 @@ export default class IncidentTypeWindow extends Component {
               All
             </Dropdown.Item>
 
-            <Dropdown.Item
-              name="Event"
-              active={this.state.activeItem === "Event"}
-              onClick={this.handleItemClick}
-            >
-              <Label>
-                {
-                  this.props.events.filter(event => event.category === "Event")
-                    .length
-                }
-              </Label>
-              Event
-            </Dropdown.Item>
+            
 
             <Dropdown.Item
               name="Incident/Accident"
@@ -91,29 +79,29 @@ export default class IncidentTypeWindow extends Component {
             </Dropdown.Item>
 
             <Dropdown.Item
-              name="RoadWork/Construction"
-              active={this.state.activeItem === "RoadWork/Construction"}
+              name="Roadwork/Construction"
+              active={this.state.activeItem === "Roadwork/Construction"}
               onClick={this.handleItemClick}
             >
               <Label>
                 {
                   this.props.events.filter(
-                    event => event.category === "RoadWork/Construction"
+                    event => event.category === "Roadwork/Construction"
                   ).length
                 }
               </Label>
-              RoadWork/Construction
+              Roadwork/Construction
             </Dropdown.Item>
 
             <Dropdown.Item
-              name="Road Closure"
-              active={this.state.activeItem === "Road Closure"}
+              name="Closure"
+              active={this.state.activeItem === "Closure"}
               onClick={this.handleItemClick}
             >
               <Label>
                 {
                   this.props.events.filter(
-                    event => event.category === "Road Closure"
+                    event => event.category === "Closure"
                   ).length
                 }
               </Label>
@@ -121,18 +109,32 @@ export default class IncidentTypeWindow extends Component {
             </Dropdown.Item>
 
             <Dropdown.Item
-              name="Non Traffic Tweet"
-              active={this.state.activeItem === "Non Traffic Tweet"}
+              name="Event"
+              active={this.state.activeItem === "Event"}
+              onClick={this.handleItemClick}
+            >
+              <Label>
+                {
+                  this.props.events.filter(event => event.category === "Event")
+                    .length
+                }
+              </Label>
+              Event
+            </Dropdown.Item>
+
+            <Dropdown.Item
+              name="Hazards"
+              active={this.state.activeItem === "Hazards"}
               onClick={this.handleItemClick}
             >
               <Label>
                 {
                   this.props.events.filter(
-                    event => event.category === "Non Traffic Tweet"
+                    event => event.category === "Hazards"
                   ).length
                 }
               </Label>
-              Non Traffic Tweet
+              Hazards
             </Dropdown.Item>
           </DropdownMenu>
         </Dropdown>

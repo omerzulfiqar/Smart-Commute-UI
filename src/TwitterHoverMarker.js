@@ -40,7 +40,7 @@ export default class TwitterHoverMarker extends Component {
 
   getIcon() {
     switch (this.props.event.category) {
-      case "RoadWork/Construction":
+      case "Roadwork/Construction":
         return roadwork;
       case "Event":
         return event;
