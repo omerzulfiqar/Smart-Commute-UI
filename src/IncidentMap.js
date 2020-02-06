@@ -5,8 +5,8 @@ import TwitterHoverMarker from "./TwitterHoverMarker";
 class IncidentMap extends Component {
   static defaultProps = {
     center: {
-      lat: 40.754973,
-      lng: -73.988301
+      lat: 38.8968325,
+      lng: -77.1916702
     },
     zoom: 14
   };
@@ -59,6 +59,7 @@ class IncidentMap extends Component {
         onChildMouseLeave={this.onChildMouseLeave}
         onChildClick={this.onChildClick}
         hoverDistance={15}
+        layerTypes={['TransitLayer']}
       >
         {this.props.events.map(event => (
           <TwitterHoverMarker
