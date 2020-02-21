@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import IncidentMap from "./IncidentMap";
 import IncidentTypeWindow from "./IncidentTypeWindow";
+import IncidentTypeWindowRight from "./IncidentTypeWindowRight";
 import MobileIncidentTypeWindow from "./MobileIncidentTypeWindow";
 import isMobile from "ismobilejs";
 import IncidentList from "./IncidentList";
@@ -1697,6 +1698,13 @@ class MainPage extends Component {
             onUpdate={events => this.setState({ events: events })}
           />
         )}
+        (
+          <IncidentTypeWindowRight
+            events={this.state.events}
+            onMarkerClick={this.onMarkerClick}
+            onUpdate={events => this.setState({ events: events })}
+          />
+        )
         <IncidentMap events={this.state.events} />
         {this.state.mobileShowList && (
           <IncidentList
@@ -1705,6 +1713,7 @@ class MainPage extends Component {
             onMarkerClick={this.onMarkerClick}
           />
         )}
+        
       </div>
     );
   }

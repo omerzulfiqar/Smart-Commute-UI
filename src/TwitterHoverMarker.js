@@ -5,7 +5,7 @@ import event from "./event.svg";
 import roadclosure from "./road-closure.svg";
 import accident from "./accident.png";
 import hazards from "./hazards.png";
-import metro from "./metro_1.svg"
+import metro from "./metro_1.svg";
 
 const InfoWindow = props => {
   const { event } = props;
@@ -25,7 +25,26 @@ const InfoWindow = props => {
 
   return (
     <div style={infoWindowStyle}>
-      <div style={{ fontSize: 14, color: "#5b8b92" }}>{event.Name}</div>
+      {/* <div style={{ fontSize: 14, color: "#5b8b92" }}>{event.Name}</div> */}
+      <div class="ui items">
+        <div class="item">
+          <div class="content">
+            <a class="header">{event.Name}</a>
+            <div class="description">WMATA</div>
+            <div class="extra">
+              <div class="ui label">
+                <i class="check icon"></i> 1
+              </div>
+              <div class="ui label">
+                <i class="question icon"></i> 3
+              </div>
+              <div class="ui label">
+                <i class="x icon"></i> 0
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
