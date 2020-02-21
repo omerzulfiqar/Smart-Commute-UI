@@ -26,17 +26,17 @@ class IncidentMap extends Component {
 
   onChildClick = key => {
     this.props.events.forEach(event => {
-      event.lock = event.id === key ? !event.lock : false;
+      event.lock = event.Code === key ? !event.lock : false;
     });
   };
 
   onChildMouseEnter = key => {
-    const index = this.props.events.findIndex(e => e.id === key);
+    const index = this.props.events.findIndex(e => e.Code === key);
     this.props.events[index].show = true;
   };
 
   onChildMouseLeave = key => {
-    const index = this.props.events.findIndex(e => e.id === key);
+    const index = this.props.events.findIndex(e => e.Code === key);
     this.props.events[index].show = false;
   };
 
@@ -63,9 +63,9 @@ class IncidentMap extends Component {
       >
         {this.props.events.map(event => (
           <TwitterHoverMarker
-            key={event.id}
-            lat={event.lat}
-            lng={event.lng}
+            key={event.Code}
+            lat={event.Lat}
+            lng={event.Lon}
             event={event}
           />
         ))}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Menu, Label, MenuItem, List } from "semantic-ui-react";
+import twitter from "./Twitter_Social_Icon_Circle_Color.svg";
 
 export default class IncidentTypeWindow extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class IncidentTypeWindow extends Component {
 
     return (
       document.getElementById("menu").offsetHeight -
-      document.getElementById("filter").offsetHeight -
+      // document.getElementById("filter").offsetHeight -
       60
     );
   }
@@ -49,6 +50,16 @@ export default class IncidentTypeWindow extends Component {
       marginBottom: 10
     };
 
+    const timelineStyle = {
+      marginTop: 18,
+      marginBottom: 10
+    };
+
+    const timelineItemStyle = {
+      marginTop: 10,
+      marginBottom: 10
+    };
+
     const iconStyle = {
       float: "left"
     };
@@ -60,7 +71,7 @@ export default class IncidentTypeWindow extends Component {
 
     return (
       <Menu vertical size="massive" style={menuStyle} id="menu">
-        <MenuItem id="filter">
+        {/* <MenuItem id="filter">
           Filter
           <Menu.Menu>
             <Menu.Item
@@ -71,8 +82,6 @@ export default class IncidentTypeWindow extends Component {
               <Label>{this.props.events.length}</Label>
               All
             </Menu.Item>
-
-            
 
             <Menu.Item
               name="Incident/Accident"
@@ -148,11 +157,135 @@ export default class IncidentTypeWindow extends Component {
               Hazards
             </Menu.Item>
           </Menu.Menu>
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem>
-          Incidents list
-          <List selection style={listStyle}>
+          Storyline/Timeline
+          <div class="ui feed" style={timelineStyle}>
+            <div class="event">
+              <div class="label">
+                <img alt="icon" src={twitter} />
+              </div>
+              <div class="content">
+                <div class="date">
+                  2019-07-20 15:38:14
+                  <div class="extra">
+                    <i class="green check icon"></i>
+                    Confirmed
+                  </div>
+                </div>
+                <div class="extra text">
+                  Man Arrested in Shaw-Howard University Metro Shooting
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui feed" style={timelineItemStyle}>
+            <div class="event">
+              <div class="label">
+                <img alt="icon" src={twitter} />
+              </div>
+              <div class="content">
+                <div class="date">
+                  2019-07-19 22:20:45
+                  <div class="extra">
+                    <i class="green check icon"></i>
+                    Confirmed
+                  </div>
+                </div>
+                <div class="extra text">
+                  1 injured, 2 sought after shooting at Shaw-Howard U Metro
+                  station | WTOP
+                  https://wtop.com/dc/2019/07/1-injured-2-sought-after-shooting-at-shaw-howard-u-metro-station/
+                  #SmartNews #bringit33"
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui feed" style={timelineItemStyle}>
+            <div class="event">
+              <div class="label">
+                <img alt="icon" src={twitter} />
+              </div>
+              <div class="content">
+                <div class="date">
+                  2019-07-19 13:34:55
+                  <div class="extra">
+                    <i class="green check icon"></i>
+                    Confirmed
+                  </div>
+                </div>
+                <div class="extra text">
+                  #BREAKING Man shot at Shaw-Howard University Metro Station at
+                  1:12pm. He is conscious and breathing. Witnesses say the
+                  victim walked from the metro station to the 700 block of T st
+                  NW. #MPD #MetroTransitPD
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui feed" style={timelineItemStyle}>
+            <div class="event">
+              <div class="label">
+                <img alt="icon" src={twitter} />
+              </div>
+              <div class="content">
+                <div class="date">
+                  2019-07-19 13:16:14
+                  <div class="extra">
+                    <i class="green check icon"></i>
+                    Confirmed
+                  </div>
+                </div>
+                <div class="extra text">
+                  UPDATED: Yellow/Green Line Alert: Shaw-Howard's 7th St
+                  entrance is closed due to a police investigation. The 8th St
+                  entrance remains open
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui feed" style={timelineItemStyle}>
+            <div class="event">
+              <div class="label">
+                <img alt="icon" src={twitter} />
+              </div>
+              <div class="content">
+                <div class="date">
+                  2019-07-19 13:05:02
+                  <div class="extra">
+                    <i class="yellow question icon"></i>
+                    Under review
+                  </div>
+                </div>
+                <div class="extra text">
+                  somebody just got shot at Shaw-Howard station. I ain't never
+                  ran so fast in my life. It's too hot
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui feed" style={timelineItemStyle}>
+            <div class="event">
+              <div class="label">
+                <img alt="icon" src={twitter} />
+              </div>
+              <div class="content">
+                <div class="date">
+                  2019-07-19 12:58:32
+                  <div class="extra">
+                    <i class="yellow question icon"></i>
+                    Under review
+                  </div>
+                </div>
+                <div class="extra text">
+                  Young I was just bout to get on the train at Shaw Howard and
+                  somebody just got shot in the station.
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <List selection style={listStyle}>
             {this.props.events.map(event =>
               event.visible ? (
                 <List.Item
@@ -174,7 +307,7 @@ export default class IncidentTypeWindow extends Component {
                 </List.Item>
               ) : null
             )}
-          </List>
+          </List> */}
         </MenuItem>
       </Menu>
     );

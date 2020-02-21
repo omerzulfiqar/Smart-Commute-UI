@@ -5,6 +5,7 @@ import event from "./event.svg";
 import roadclosure from "./road-closure.svg";
 import accident from "./accident.png";
 import hazards from "./hazards.png";
+import metro from "./metro_1.svg"
 
 const InfoWindow = props => {
   const { event } = props;
@@ -24,7 +25,7 @@ const InfoWindow = props => {
 
   return (
     <div style={infoWindowStyle}>
-      <div style={{ fontSize: 14, color: "#5b8b92" }}>{event.description}</div>
+      <div style={{ fontSize: 14, color: "#5b8b92" }}>{event.Name}</div>
     </div>
   );
 };
@@ -41,6 +42,8 @@ export default class TwitterHoverMarker extends Component {
 
   getIcon() {
     switch (this.props.event.category) {
+      case "Metro":
+        return metro;
       case "Roadwork/Construction":
         return roadwork;
       case "Event":

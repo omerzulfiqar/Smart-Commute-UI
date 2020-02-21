@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { List, Button, Header } from "semantic-ui-react";
 
+
 class IncidentList extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +52,7 @@ class IncidentList extends Component {
     return (
       <div style={listStyle}>
         <Header size="medium" floated="left" style={headerStyle}>
-          Incident list
+          Storyline/Timeline
         </Header>
         <Button
           basic
@@ -64,15 +65,15 @@ class IncidentList extends Component {
           {this.props.events.map(event =>
             event.visible ? (
               <List.Item
-                key={event.id}
-                id={event.id}
+                key={event.Code}
+                id={event.Code}
                 onClick={(event, data) => {
                   this.props.onMarkerClick(data.id);
                 }}
               >
                 <List.Icon name="marker" size="large" verticalAlign="middle" />
                 <List.Content>
-                  <List.Header>{event.category}</List.Header>
+                  <List.Header>{event.Name}</List.Header>
                   <List.Description>{event.description}</List.Description>
                 </List.Content>
               </List.Item>
