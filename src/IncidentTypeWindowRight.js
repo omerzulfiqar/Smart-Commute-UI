@@ -75,10 +75,10 @@ export default class IncidentTypeWindow extends Component {
           <List.Item
             style={itemStyle}
             // key={event.id}
-            // id={event.id}
-            // onClick={(event, data) => {
-            //   this.props.onMarkerClick(data.id);
-            // }}
+            id={event.Code}
+            onClick={(event, {id}) => {
+              this.props.onStationClick(id);
+            }}
           >
             <List.Icon
               style={iconStyle}

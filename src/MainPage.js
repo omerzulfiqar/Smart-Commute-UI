@@ -5,8 +5,7 @@ import IncidentTypeWindowRight from "./IncidentTypeWindowRight";
 import MobileIncidentTypeWindow from "./MobileIncidentTypeWindow";
 import isMobile from "ismobilejs";
 import IncidentList from "./IncidentList";
-
-
+import _ from "lodash";
 var data = [
   {
     "Stations": [{
@@ -1636,6 +1635,7 @@ class MainPage extends Component {
       mobileShowList: false
     };
     this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.onStationClick = this.onStationClick.bind(this);
   }
 
   componentDidMount() {
@@ -1671,6 +1671,20 @@ class MainPage extends Component {
     this.setState({ mobileShowList: false });
   };
 
+  onStationClick(stationId) {
+    console.log(stationId);
+    let station = _.find(this.state.events, { 'Code': stationId});
+    this.setState({ 
+      mapUpdate: true,
+      newCenter: {
+        Lat: station.Lat,
+        Lon: station.Lon,
+        lat: station.Lat,
+        lng: station.Lon
+      }
+    });
+  }
+
   onMarkerClick(id) {
     this.setState(state => {
       state.events.forEach(event => {
@@ -1703,13 +1717,19 @@ class MainPage extends Component {
             events={this.state.events}
             onMarkerClick={this.onMarkerClick}
             onUpdate={events => this.setState({ events: events })}
+            onStationClick={this.onStationClick}
           />
         )
-        <IncidentMap events={this.state.events} />
+        <IncidentMap events={this.state.events} 
+          onStationClick={this.onStationClick}
+          newCenter = {this.state.newCenter}
+          onUpdate={events => this.setState({ center: events })}
+        />
         {this.state.mobileShowList && (
           <IncidentList
             events={this.state.events}
             onListClose={this.onListClose}
+            onUpdate={events => this.setState({ center: events })}
             onMarkerClick={this.onMarkerClick}
           />
         )}

@@ -54,6 +54,7 @@ class IncidentMap extends Component {
         style={{ width: "100%", height: this.state.height }}
         bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
         defaultCenter={this.props.center}
+        center={this.props.newCenter}
         defaultZoom={this.props.zoom}
         onChildMouseEnter={this.onChildMouseEnter}
         onChildMouseLeave={this.onChildMouseLeave}
