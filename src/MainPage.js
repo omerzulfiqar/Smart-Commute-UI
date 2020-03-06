@@ -70,9 +70,8 @@ class MainPage extends Component {
     if (!isMobile(navigator.userAgent).any) {
       this.child.current.updateStation(stationId);
     } else {
-      this.setState({selectedStation: stationId});
+      this.setState({ selectedStation: stationId });
     }
-    
 
     this.setState(state => {
       state.events.forEach(event => {
@@ -114,8 +113,6 @@ class MainPage extends Component {
       overflowX: "hidden",
       background: "white"
     };
-    
-
 
     return (
       <div>
@@ -144,7 +141,7 @@ class MainPage extends Component {
           //   onUpdate={events => this.setState({ events: events })}
           // />
         )}
-        
+
         <IncidentMap
           events={this.state.events}
           onStationClick={this.onStationClick}
@@ -152,18 +149,21 @@ class MainPage extends Component {
           onUpdate={events => this.setState({ center: events })}
         />
         {this.state.mobileShowIncidentList && (
-          <MobileStoryline selectedStation={this.state.selectedStation} events={this.state.stories} ref={this.child} onListClose={this.onListClose}/>
+          <MobileStoryline
+            selectedStation={this.state.selectedStation}
+            events={this.state.stories}
+            ref={this.child}
+            onListClose={this.onListClose}
+          />
         )}
         {this.state.mobileShowStationList && (
-          (
-            <MobileStationList
-              events={this.state.events}
-              onMarkerClick={this.onMarkerClick}
-              onUpdate={events => this.setState({ events: events })}
-              onStationClick={this.onStationClick}
-              onListClose={this.onListClose}
-            />
-            )
+          <MobileStationList
+            events={this.state.events}
+            onMarkerClick={this.onMarkerClick}
+            onUpdate={events => this.setState({ events: events })}
+            onStationClick={this.onStationClick}
+            onListClose={this.onListClose}
+          />
         )}
       </div>
     );
@@ -211,6 +211,129 @@ var stories = [
       "Young I was just bout to get on the train at Shaw Howard and somebody just got shot in the station.",
     status: 0,
     date: "2019-07-19 12:58:32"
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 18:30:11+00:00",
+    message: "Person Struck by Train at Court House Metro Station",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 21:33:17+00:00",
+    message:
+      "Person struck by train at Court House Metro station, officials say; Orange and Silver line service suspended in area: https://www.washingtonpost.com/transportation/2020/01/23/person-struck-by-train-court-house-station-officials-say/ #WMATA #Transit #WashingtonDC #Transportation #DCMetro",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 21:10+00:00",
+    message:
+      "Woman Struck by Train at Court House Metro Station https://www.nbcwashington.com/news/local/northern-virginia/person-struck-by-train-at-court-house-metro-station/2203296/",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 20:18:20+00:00",
+    message:
+      "Woman trapped under Metro after being hit by train at Court House. https://www.wusa9.com/article/traffic/mission-metro/woman-hit-by-metro-train-court-house-station/65-b371878f-bd19-4fd3-8546-dc3097e6fb59",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 19:46:39+00:00",
+    message:
+      "Woman struck by train at Court House Metro Station after experiencing medical emergency, officials say",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 19:33:56+00:00",
+    message:
+      "WaPo: Metro service restored after person struck by train at Court House http://feeds.washingtonpost.com/![CDATA[https://www.washingtonpost.com/transportation/2020/01/23/person-struck-by-train-court-house-station-officials-say/]]",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 19:07:41+00:00",
+    message:
+      "A person was struck by a train at the Court House Metro station...after experiencing a medical emergency and falling off the platform... Arlington fire officials said the female victim was taken to a hospital with injuries that were not life-threatening. ",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 19:03:07+00:00",
+    message:
+      "medical emergency caused someone to fall onto the tracks and be struck by a train at Court House station. bloody scarf being photographed for evidence, crime scene unit at the scene now @wmata @ABC7News #wmata #metro",
+    status: 1
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 18:02:00+00:00",
+    message:
+      "Yes Court House Metro Arlington VA 5:30pm stuck under the train tag my Instagram @chrissydababy",
+    status: 2
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 18:01:12+00:00",
+    message:
+      "Person struck by train at Court House Metro Station after experiencing medical emergency, officials say https://www.fox5dc.com/news/person-struck-by-train-at-court-house-metro-station-after-experiencing-medical-emergency-officials-say",
+    status: 2
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 18:00:47+00:00",
+    message:
+      "Person struck by train at Court House Metro, expect delays https://wjla.com/news/local/person-struck-by-train-at-courthouse-metro-station",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:59:53+00:00",
+    message:
+      "Orange Line trains bypassing Court House Metro after person struck by train https://www.washingtonpost.com/transportation/2020/01/23/person-struck-by-train-court-house-station-officials-say/",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:51:07+00:00",
+    message:
+      "Person struck by train at Court House Metro station, officials say; Orange and Silver line service suspended in area: https://www.washingtonpost.com/transportation/2020/01/23/person-struck-by-train-court-house-station-officials-say/ #WMATA #Transit #WashingtonDC #Transportation #DCMetro",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:50:20+00:00",
+    message:
+      "Woman trapped under Metro after being hit by train at Court House",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:48:44+00:00",
+    message: "Woman Struck by Train at Court House Metro Station",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:48:31+00:00",
+    message:
+      "Some Metro service suspended due to person hit by train at Court House station. Silver trains turned back at Ballston; some WB Orange running through Rosslyn to National Airport, or single-tracking past CH per @Metrorailinfo. https://www.washingtonpost.com/transportation/2020/01/23/person-struck-by-train-court-house-station-officials-say/ /cc @wmataRAC",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:25:26+00:00",
+    message:
+      "Be safe out there esp if you ride the Metro in DC. Currently on the orange line and the train operator yells over the speaker that there was a suicide at Court House. So tragic and lack of sensitivity in this situation.",
+    status: 0
+  },
+  {
+    code: "K01",
+    date: "2020-01-23 17:19:55+00:00",
+    message: "Omg someone committed suicide at the Court House metro station.",
+    status: 0
   }
 ];
 

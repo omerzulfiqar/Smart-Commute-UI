@@ -46,6 +46,10 @@ export default class Storyline extends Component {
       padding: "10px"
     }
 
+    const descriptionStyle = {
+      width: "260px"
+    }
+
     const emptyStyle = {
       marginTop: "20px",
       textAlign: "center"
@@ -59,7 +63,7 @@ export default class Storyline extends Component {
           <Feed.Content>
             <Feed.Date>{story.date}</Feed.Date>
             {this.getStatusIcon(story)}
-            <Feed.Extra text>{story.message}</Feed.Extra>
+            <Feed.Extra text style={descriptionStyle}>{story.message}</Feed.Extra>
           </Feed.Content>
         </Feed.Event>
       ));
