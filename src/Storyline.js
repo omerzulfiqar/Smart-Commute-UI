@@ -10,6 +10,10 @@ export default class Storyline extends Component {
     };
   }
 
+  updateStation(code) {
+    this.setState({ selectStation: { code } });
+  }
+
   getStatusIcon(story) {
     switch (story.status) {
       case 1:
@@ -37,8 +41,33 @@ export default class Storyline extends Component {
     }
   }
 
-  render() {
+  getEventByStation() {
+    var events = this.props.events
+      .filter(story => story.code === this.state.selectStation)
+      .map(story => (
+        <Feed.Event>
+          <Feed.Label image={twitter} />
+          <Feed.Content>
+            <Feed.Date>{story.date}</Feed.Date>
+            {this.getStatusIcon(story)}
+            <Feed.Extra text>{story.message}</Feed.Extra>
+          </Feed.Content>
+        </Feed.Event>
+      ));
 
+    console.log(events);
+    return events.length > 0 ? (
+      events
+    ) : (
+      <Feed.Event>
+        <Feed.Content>
+          <Feed.Summary>No incidents</Feed.Summary>
+        </Feed.Content>
+      </Feed.Event>
+    );
+  }
+
+  render() {
     const timelineStyle = {
       position: "fixed",
       top: "10px",
@@ -57,18 +86,7 @@ export default class Storyline extends Component {
 
     return (
       <Feed select style={timelineStyle} id="feed">
-        {this.props.events.map(story =>
-          story.code === this.state.selectStation ? (
-            <Feed.Event>
-              <Feed.Label image={twitter} />
-              <Feed.Content>
-                <Feed.Date>{story.date}</Feed.Date>
-                {this.getStatusIcon(story)}
-                <Feed.Extra text>{story.message}</Feed.Extra>
-              </Feed.Content>
-            </Feed.Event>
-          ) : null
-        )}
+        {this.getEventByStation()}
       </Feed>
     );
   }

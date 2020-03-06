@@ -10,6 +10,7 @@ import _ from "lodash";
 
 
 class MainPage extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +20,7 @@ class MainPage extends Component {
     };
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onStationClick = this.onStationClick.bind(this);
+    this.child = React.createRef();
   }
 
   componentDidMount() {
@@ -56,7 +58,8 @@ class MainPage extends Component {
   };
 
   onStationClick(stationId) {
-    console.log(stationId);
+    this.child.current.updateStation(stationId);
+    
     let station = _.find(this.state.events, { 'Code': stationId});
     this.setState({ 
       mapUpdate: true,
@@ -81,6 +84,7 @@ class MainPage extends Component {
   }
 
   render() {
+    
     return (
       <div>
         {/* {isMobile(navigator.userAgent).any ? (
@@ -96,7 +100,7 @@ class MainPage extends Component {
             onUpdate={events => this.setState({ events: events })}
           />
         )} */}
-        <Stroyline events={this.state.stories}/>
+        <Stroyline events={this.state.stories} ref={this.child}/>
         (
           <IncidentTypeWindowRight
             events={this.state.events}
