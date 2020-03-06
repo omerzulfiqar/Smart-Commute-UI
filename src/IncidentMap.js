@@ -31,8 +31,15 @@ class IncidentMap extends Component {
   };
 
   onChildMouseEnter = key => {
-    const index = this.props.events.findIndex(e => e.Code === key);
-    this.props.events[index].show = true;
+    this.props.events.forEach( event => {
+      if (event.Code === key) {
+        event.show = true;
+      } else {
+        event.lock = false;
+        event.show = false;
+        event.forceHover = false;
+      }
+    });
   };
 
   onChildMouseLeave = key => {
