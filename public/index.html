@@ -25,6 +25,28 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css"></link>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCPSIyH0iyF1cIeIOmOk255_gYoYLUhNbU",
+        authDomain: "ri-c1340.firebaseapp.com",
+        databaseURL: "https://ri-c1340.firebaseio.com",
+        projectId: "ri-c1340",
+        storageBucket: "ri-c1340.appspot.com",
+        messagingSenderId: "286750671445",
+        appId: "1:286750671445:web:7ece0f2ff88dbe42590adc"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="https://ocdn.eu/weather/pwa/workbox-sw.prod.v1.0.0.js"></script>
     <title>Risecure</title>
   </head>
   <body>

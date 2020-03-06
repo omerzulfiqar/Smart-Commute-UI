@@ -1,22 +1,29 @@
-self.addEventListener('install', event => {
-    console.log('[ServiceWorker] Install');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+importScripts('https://ocdn.eu/weather/pwa/workbox-sw.prod.v1.0.0.js');
+
+const cacheName = 'articles-cache';
+
+
+//open notification link after click on system notification
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  event.waitUntil(self.clients.openWindow(event.notification.data.click_action));
 });
-self.addEventListener('activate', event => {
-    event.waitUntil(clients.claim());
-});
-self.addEventListener('fetch', event => {
-console.log('[ServiceWorker] fetch', event.request);
-});
-self.addEventListener('notificationclick', event => {
-    const notification = event.notification;
-    const action = event.action;
-    const link = notification.data.link;
-    if (action !== 'close') {
-      if (link) {
-        clients.openWindow(link);
-      }
+
+//configure workbox to serve content using the same cache as backgroundNotificationHandler
+const workboxSW = new WorkboxSW();
+workboxSW.router.registerRoute(
+  /.*/,
+  workboxSW.strategies.networkFirst({
+    cacheName: cacheName,
+    cacheExpiration: {
+      maxEntries: 50,
+      maxAgeSeconds: 2 * 24 * 60 * 60,
+      networkTimeoutSeconds: 8
     }
-    notification.close();
-    console.log('notificationclick action is', action);
   })
-  
+);
+
+self.addEventListener('install', e => self.skipWaiting());
+self.addEventListener('activate', () => self.clients.claim());
