@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import IncidentMap from "./IncidentMap";
 import Stroyline from "./Storyline";
 import IncidentTypeWindow from "./IncidentTypeWindow";
-import IncidentTypeWindowRight from "./IncidentTypeWindowRight";
+import StationList from "./StationList";
 import MobileIncidentTypeWindow from "./MobileIncidentTypeWindow";
 import isMobile from "ismobilejs";
 import IncidentList from "./IncidentList";
@@ -25,14 +25,15 @@ class MainPage extends Component {
 
   componentDidMount() {
     var stations = JSON.parse(JSON.stringify(data))[0].Stations;
-    console.log(stations);
     stations.forEach(result => {
-      console.log(result.stories);
       result.show = false;
       result.lock = false;
       result.visible = true;
       result.forceHover = false;
       result.category = "Metro";
+      result.confirmCount = stories.filter( story => story.code === result.Code && story.status === 1).length;
+      result.reviewCount = stories.filter( story => story.code === result.Code && story.status === 0).length;
+      result.fakeCount = stories.filter( story => story.code === result.Code && story.status === 2).length;
     });
     this.setState({ events: stations, stories: stories});
 
@@ -58,6 +59,7 @@ class MainPage extends Component {
   };
 
   onStationClick(stationId) {
+    console.log(stationId)
     this.child.current.updateStation(stationId);
     
     let station = _.find(this.state.events, { 'Code': stationId});
@@ -102,7 +104,7 @@ class MainPage extends Component {
         )} */}
         <Stroyline events={this.state.stories} ref={this.child}/>
         (
-          <IncidentTypeWindowRight
+          <StationList
             events={this.state.events}
             onMarkerClick={this.onMarkerClick}
             onUpdate={events => this.setState({ events: events })}

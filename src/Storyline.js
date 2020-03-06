@@ -11,7 +11,7 @@ export default class Storyline extends Component {
   }
 
   updateStation(code) {
-    this.setState({ selectStation: { code } });
+    this.setState({ selectStation: code });
   }
 
   getStatusIcon(story) {
@@ -42,10 +42,19 @@ export default class Storyline extends Component {
   }
 
   getEventByStation() {
+    const feedStyle = {
+      padding: "10px"
+    }
+
+    const emptyStyle = {
+      marginTop: "20px",
+      textAlign: "center"
+    }
+    
     var events = this.props.events
       .filter(story => story.code === this.state.selectStation)
       .map(story => (
-        <Feed.Event>
+        <Feed.Event style={feedStyle}>
           <Feed.Label image={twitter} />
           <Feed.Content>
             <Feed.Date>{story.date}</Feed.Date>
@@ -55,13 +64,12 @@ export default class Storyline extends Component {
         </Feed.Event>
       ));
 
-    console.log(events);
     return events.length > 0 ? (
       events
     ) : (
       <Feed.Event>
         <Feed.Content>
-          <Feed.Summary>No incidents</Feed.Summary>
+          <Feed.Summary  style={emptyStyle}>No incidents</Feed.Summary>
         </Feed.Content>
       </Feed.Event>
     );
@@ -70,15 +78,12 @@ export default class Storyline extends Component {
   render() {
     const timelineStyle = {
       position: "fixed",
-      top: "10px",
-      left: "10px",
-      bottom: "10px",
+      top: "0px",
+      left: "0px",
+      bottom: "-10px",
       zIndex: "10000000000",
+      margin: "0px",
       backgroundColor: "#FFFFFF",
-      marginTop: 10,
-      marginBottom: 10,
-      paddingTop: 10,
-      paddingLeft: 10,
       width: "340px",
       overflowY: "scroll",
       overflowX: "hidden"

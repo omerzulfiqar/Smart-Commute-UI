@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Menu, Label, MenuItem, List } from "semantic-ui-react";
 import twitter from "./Twitter_Social_Icon_Circle_Color.svg";
 
-export default class IncidentTypeWindow extends Component {
+export default class StationList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,24 +36,15 @@ export default class IncidentTypeWindow extends Component {
   render() {
     const menuStyle = {
       position: "fixed",
-      top: "-14px",
+      width: "280px",
+      top: "0px",
+      bottom: "0px",
       right: "0px",
       zIndex: "10000000000",
       backgroundColor: "#FFFFFF",
-      bottom: "-14px"
-    };
-
-    const listStyle = {
       overflowY: "scroll",
       overflowX: "hidden",
-      height: this.getListHeight(),
-      marginTop: 10,
-      marginBottom: 10
-    };
-
-    const timelineStyle = {
-      marginTop: 18,
-      marginBottom: 10
+      margin: "0px"
     };
 
     const itemStyle = {
@@ -64,13 +55,8 @@ export default class IncidentTypeWindow extends Component {
       float: "left"
     };
 
-    const contentStyle = {
-      float: "right",
-      width: "250px"
-    };
-
     return (
-      <List selection style={menuStyle}>
+      <List selection style={menuStyle} size="small">
         {this.props.events.map(event => (
           <List.Item
             style={itemStyle}
