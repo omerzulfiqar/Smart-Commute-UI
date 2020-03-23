@@ -54,10 +54,11 @@ export default class Storyline extends Component {
       marginTop: "20px",
       textAlign: "center"
     }
-    
-    var events = this.props.events
-      .filter(story => story.code === this.state.selectStation)
-      .map(story => (
+
+    var events = this.props.events.filter(station => station.Code === this.state.selectStation);
+    var stories = [];
+    if (events.length > 0) {
+      stories = events[0].stories.map(story => (
         <Feed.Event style={feedStyle}>
           <Feed.Label image={twitter} />
           <Feed.Content>
@@ -67,9 +68,10 @@ export default class Storyline extends Component {
           </Feed.Content>
         </Feed.Event>
       ));
+    }
 
-    return events.length > 0 ? (
-      events
+    return stories.length > 0 ? (
+      stories
     ) : (
       <Feed.Event>
         <Feed.Content>
