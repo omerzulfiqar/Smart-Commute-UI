@@ -5,6 +5,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import {messaging} from "./firebase";
 
+ReactDOM.render(<App />, document.getElementById("root"));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.register();
+
 messaging.requestPermission()
   .then(res => {
     // 若允許通知 -> 向 firebase 拿 token
@@ -39,9 +46,3 @@ messaging.requestPermission()
         window.open(notifyMsg.click_action);
     }
 })
-ReactDOM.render(<App />, document.getElementById("root"));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
