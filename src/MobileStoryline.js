@@ -51,9 +51,11 @@ export default class MobileStoryline extends Component {
       textAlign: "center"
     };
 
-    var events = this.props.events
-      .filter(story => story.code === this.state.selectStation)
-      .map(story => (
+    var stations = this.props.events.filter(station => station.Code === this.state.selectStation);
+    var stories = [];
+
+    if (stations.length > 0) {
+      stories = stations[0].stories.map(story => (
         <Feed.Event style={feedStyle}>
           <Feed.Label image={twitter} />
           <Feed.Content>
@@ -63,8 +65,9 @@ export default class MobileStoryline extends Component {
           </Feed.Content>
         </Feed.Event>
       ));
+    }
 
-      events.unshift(<Feed.Event>
+    stories.unshift(<Feed.Event>
         <Feed.Content>
         <Header size="medium" floated="left" style={feedStyle}>
           Storyline/Timeline
@@ -78,14 +81,14 @@ export default class MobileStoryline extends Component {
         </Feed.Content>
       </Feed.Event>)
 
-      if (events.length <= 1) {
-        events.push(<Feed.Event>
+      if (stories.length <= 1) {
+        stories.push(<Feed.Event>
           <Feed.Content>
             <Feed.Summary style={emptyStyle}>No incidents</Feed.Summary>
           </Feed.Content>
         </Feed.Event>)
       }
-      return events;
+      return stories;
   }
 
   render() {

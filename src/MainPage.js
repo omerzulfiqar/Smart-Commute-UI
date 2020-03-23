@@ -147,7 +147,7 @@ class MainPage extends Component {
         {this.state.mobileShowIncidentList && (
           <MobileStoryline
             selectedStation={this.state.selectedStation}
-            events={this.state.stories}
+            events={this.state.events}
             ref={this.child}
             onListClose={this.onListClose}
           />
