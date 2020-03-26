@@ -10,6 +10,8 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
+import urlB64ToUint8Array from 'urlb64touint8array';
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -33,6 +35,7 @@ export function register(config) {
     }
 
     window.addEventListener('load', () => {
+      console.log("load")
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
@@ -56,6 +59,7 @@ export function register(config) {
     // Register push notification event
     window.addEventListener('push', function(e) {
       var body;
+      console.log("push: " + e)
 
       if (e.data) {
         body = e.data.text();
@@ -81,6 +85,11 @@ export function register(config) {
         navigator.serviceWorker.getRegistration().showNotification('Hello world!', options)
       );
     })
+    window.addEventListener('activate', function(event) {
+      event.waitUntil(
+        console.log("activate: " + event)
+      );
+    });
   }
 }
 
@@ -168,11 +177,15 @@ function checkValidServiceWorker(swUrl, config) {
 }
 
 function subscribeUser() {
+  const applicationServerPublicKey = 'BFr6ED_cyPWUq3cFCQC9UJ3QOf8Rxhh6Kk3syUU292PitVEX2NufMpg3JrIpkcYcY--x2yNg6kRVlTCJm4t5PX8';
+  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(function(reg) {
 
       reg.pushManager.subscribe({
-        userVisibleOnly: true
+        userVisibleOnly: true,
+        applicationServerKey: applicationServerKey
       }).then(function(sub) {
         console.log('Endpoint URL: ', sub.endpoint);
       }).catch(function(e) {
