@@ -1,6 +1,7 @@
 {
   "short_name": "Risecure",
   "name": "Risecure",
+  "gcm_sender_id": "286750671445",
   "icons": [
     {
       "src": "favicon.ico",
@@ -22,4 +23,5 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
+  
 }

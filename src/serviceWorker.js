@@ -21,6 +21,7 @@ const isLocalhost = Boolean(
 );
 
 export function register(config) {
+  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
@@ -51,6 +52,35 @@ export function register(config) {
         registerValidSW(swUrl, config);
       }
     });
+    
+    // Register push notification event
+    window.addEventListener('push', function(e) {
+      var body;
+
+      if (e.data) {
+        body = e.data.text();
+      } else {
+        body = 'Push message no payload';
+      }
+      var options = {
+        body: body,
+        icon: 'images/notification-flat.png',
+        vibrate: [100, 50, 100],
+        data: {
+          dateOfArrival: Date.now(),
+          primaryKey: 1
+        },
+        actions: [
+          {action: 'explore', title: 'Explore this new world',
+            icon: 'images/checkmark.png'},
+          {action: 'close', title: 'I don\'t want any of this',
+            icon: 'images/xmark.png'},
+        ]
+      };
+      e.waitUntil(
+        navigator.serviceWorker.getRegistration().showNotification('Hello world!', options)
+      );
+    })
   }
 }
 
@@ -58,6 +88,17 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+      console.log('Service Worker Registered!', registration);
+      registration.pushManager.getSubscription().then(function(sub) {
+        if (sub === null) {
+          // Update UI to ask user to register for Push
+          console.log('Not subscribed to push service!');
+          subscribeUser()
+        } else {
+          // We have a subscription, update the database
+          console.log('Subscription object: ', sub);
+        }
+      });
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -124,6 +165,25 @@ function checkValidServiceWorker(swUrl, config) {
         'No internet connection found. App is running in offline mode.'
       );
     });
+}
+
+function subscribeUser() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then(function(reg) {
+
+      reg.pushManager.subscribe({
+        userVisibleOnly: true
+      }).then(function(sub) {
+        console.log('Endpoint URL: ', sub.endpoint);
+      }).catch(function(e) {
+        if (Notification.permission === 'denied') {
+          console.warn('Permission for notifications was denied');
+        } else {
+          console.error('Unable to subscribe to push', e);
+        }
+      });
+    })
+  }
 }
 
 export function unregister() {
