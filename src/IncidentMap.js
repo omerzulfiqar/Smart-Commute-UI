@@ -25,6 +25,7 @@ class IncidentMap extends Component {
   };
 
   onChildClick = key => {
+    this.props.onStationClick(key, false);
     this.props.events.forEach(event => {
       event.lock = event.Code === key ? !event.lock : false;
     });

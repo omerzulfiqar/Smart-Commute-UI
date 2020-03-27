@@ -67,7 +67,7 @@ class MainPage extends Component {
     });
   };
 
-  onStationClick(stationId) {
+  onStationClick(stationId, moveToStation = true) {
     if (!isMobile(navigator.userAgent).any) {
       this.child.current.updateStation(stationId);
     } else {
@@ -83,16 +83,18 @@ class MainPage extends Component {
       return { mobileShowStationList: false, events: state.events };
     });
 
-    let station = _.find(this.state.events, { Code: stationId });
-    this.setState({
-      mapUpdate: true,
-      newCenter: {
-        Lat: station.Lat,
-        Lon: station.Lon,
-        lat: station.Lat,
-        lng: station.Lon
-      }
-    });
+    if (moveToStation) {
+      let station = _.find(this.state.events, { Code: stationId });
+      this.setState({
+        mapUpdate: true,
+        newCenter: {
+          Lat: station.Lat,
+          Lon: station.Lon,
+          lat: station.Lat,
+          lng: station.Lon
+        }
+      });
+    } 
   }
 
   onMarkerClick(id) {
