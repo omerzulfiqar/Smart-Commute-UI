@@ -10,8 +10,6 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-import urlB64ToUint8Array from 'urlb64touint8array';
-
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -54,41 +52,6 @@ export function register(config) {
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config);
       }
-    });
-    
-    // Register push notification event
-    window.addEventListener('push', function(e) {
-      var body;
-      console.log("push: " + e)
-
-      if (e.data) {
-        body = e.data.text();
-      } else {
-        body = 'Push message no payload';
-      }
-      var options = {
-        body: body,
-        icon: 'images/notification-flat.png',
-        vibrate: [100, 50, 100],
-        data: {
-          dateOfArrival: Date.now(),
-          primaryKey: 1
-        },
-        actions: [
-          {action: 'explore', title: 'Explore this new world',
-            icon: 'images/checkmark.png'},
-          {action: 'close', title: 'I don\'t want any of this',
-            icon: 'images/xmark.png'},
-        ]
-      };
-      e.waitUntil(
-        navigator.serviceWorker.getRegistration().showNotification('Hello world!', options)
-      );
-    })
-    window.addEventListener('activate', function(event) {
-      event.waitUntil(
-        console.log("activate: " + event)
-      );
     });
   }
 }
@@ -178,7 +141,7 @@ function checkValidServiceWorker(swUrl, config) {
 
 function subscribeUser() {
   const applicationServerPublicKey = 'BFr6ED_cyPWUq3cFCQC9UJ3QOf8Rxhh6Kk3syUU292PitVEX2NufMpg3JrIpkcYcY--x2yNg6kRVlTCJm4t5PX8';
-  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  const applicationServerKey = urlBase64ToUint8Array(applicationServerPublicKey);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(function(reg) {
@@ -186,9 +149,18 @@ function subscribeUser() {
       reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: applicationServerKey
-      }).then(function(sub) {
-        console.log('Endpoint URL: ', sub.endpoint);
-      }).catch(function(e) {
+      }).then(function(subscription) {
+        return Promise.all([
+          generatePublicKey(subscription),
+          generateAuthKey(subscription),
+          subscription
+        ]);
+      }).then(function([userPublicKey, userAuthKey, subscription]) {
+        console.log("Sub Pub: " + userPublicKey)
+        console.log("Sub Auth: " + userAuthKey)
+        console.log("Sub url: " + subscription.endpoint)
+      })
+      .catch(function(e) {
         if (Notification.permission === 'denied') {
           console.warn('Permission for notifications was denied');
         } else {
@@ -197,6 +169,35 @@ function subscribeUser() {
       });
     })
   }
+}
+
+function generateKey(keyName, subscription) {
+  var rawKey;
+  rawKey = subscription.getKey ? subscription.getKey(keyName) : '';
+  return rawKey ?
+      btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) :
+      '';
+}
+
+export function generatePublicKey(subscription) {
+  return Promise.resolve(generateKey('p256dh', subscription));
+}
+
+export function generateAuthKey(subscription) {
+  return Promise.resolve(generateKey('auth', subscription));
+}
+
+export function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
 
 export function unregister() {
