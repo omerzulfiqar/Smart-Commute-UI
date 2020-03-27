@@ -69,6 +69,11 @@ function registerValidSW(swUrl, config) {
         } else {
           // We have a subscription, update the database
           console.log('Subscription object: ', sub);
+          storeSubscription({
+            "p256dh": generatePublicKey(sub),
+            "auth": generateAuthKey(sub),
+            "endpoint": sub.endpoint
+          })
         }
       });
       registration.onupdatefound = () => {
@@ -150,15 +155,16 @@ function subscribeUser() {
         userVisibleOnly: true,
         applicationServerKey: applicationServerKey
       }).then(function(subscription) {
-        return Promise.all([
-          generatePublicKey(subscription),
-          generateAuthKey(subscription),
-          subscription
-        ]);
-      }).then(function([userPublicKey, userAuthKey, subscription]) {
-        console.log("Sub Pub: " + userPublicKey)
-        console.log("Sub Auth: " + userAuthKey)
-        console.log("Sub url: " + subscription.endpoint)
+        return {
+          "p256dh": generatePublicKey(subscription),
+          "auth": generateAuthKey(subscription),
+          "endpoint": subscription.endpoint
+        }
+      }).then(function(sub) {
+        storeSubscription(sub);
+        console.log("Sub Pub: " + sub.p256dh)
+        console.log("Sub Auth: " + sub.auth)
+        console.log("Sub url: " + sub.endpoint)
       })
       .catch(function(e) {
         if (Notification.permission === 'denied') {
@@ -171,6 +177,19 @@ function subscribeUser() {
   }
 }
 
+function storeSubscription(subscription) {
+  fetch(process.env.REACT_APP_PUT_SUBSCRIPTION_API, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'api-key': process.env.REACT_APP_API_KEY
+    },
+    body: JSON.stringify(subscription),
+  })
+  .then(response => response.json())
+  .then(data => console.log(data));
+}
+
 function generateKey(keyName, subscription) {
   var rawKey;
   rawKey = subscription.getKey ? subscription.getKey(keyName) : '';
@@ -180,11 +199,11 @@ function generateKey(keyName, subscription) {
 }
 
 export function generatePublicKey(subscription) {
-  return Promise.resolve(generateKey('p256dh', subscription));
+  return generateKey('p256dh', subscription);
 }
 
 export function generateAuthKey(subscription) {
-  return Promise.resolve(generateKey('auth', subscription));
+  return generateKey('auth', subscription);
 }
 
 export function urlBase64ToUint8Array(base64String) {
