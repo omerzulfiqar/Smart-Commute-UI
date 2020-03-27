@@ -28,7 +28,6 @@ class MainPage extends Component {
     fetch(process.env.REACT_APP_EVENT_API)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         data.Stations.forEach(result => {
           result.show = false;
           result.lock = false;
