@@ -7,6 +7,7 @@ import accident from "./accident.png";
 import hazards from "./hazards.png";
 import metro from "./metro.png";
 import metroThreat from "./metro_threat.png"
+import { Timeline } from 'antd';
 
 const InfoWindow = props => {
   const { event } = props;
@@ -15,37 +16,81 @@ const InfoWindow = props => {
     position: "relative",
     left: -125,
     borderRadius: "5px",
+    height: 300,
     width: 250,
     backgroundColor: "#FFFFFF",
     boxShadow: "0 2px 7px 1px rgba(0, 0, 0, 0.3)",
-    alignItems: "center",
+    overflowY: "scroll",
     padding: 10,
     paddingBottom: 15,
     zIndex: 100
   };
 
+  var stories = event.stories;
+  console.log(event.stories)
+  var timelineItems = []
+  if (stories.length > 0) {
+    timelineItems = stories.map((story) => {
+    return <Timeline.Item> {story.message} {story.date}</Timeline.Item>
+    })
+  } else {
+    timelineItems.push(
+      <Timeline.Item> No incidents </Timeline.Item>
+    )
+  }
+  console.log(timelineItems)
+
+  // if (events.length > 0) {
+  //   stories = events[0].stories.map(story => (
+  //     <Feed.Event style={feedStyle}>
+  //       <Feed.Label image={twitter} />
+  //       <Feed.Content>
+  //         <Feed.Date>{story.date}</Feed.Date>
+  //         {this.getStatusIcon(story)}
+  //         <Feed.Extra text style={descriptionStyle}>{story.message}</Feed.Extra>
+  //       </Feed.Content>
+  //     </Feed.Event>
+  //   ));
+  // }
+
+  // return stories.length > 0 ? (
+  //   stories
+  // ) : (
+  //   <Feed.Event>
+  //     <Feed.Content>
+  //       <Feed.Summary  style={emptyStyle}>No incidents</Feed.Summary>
+  //     </Feed.Content>
+  //   </Feed.Event>
+  // );
+
   return (
     <div style={infoWindowStyle}>
-      <div class="ui items">
-        <div class="item">
-          <div class="content">
-            <a class="header">{event.Name}</a>
-            <div class="description">WMATA</div>
-            <div class="extra">
-              <div class="ui label">
-                <i class="check icon"></i> {event.confirmCount}
-              </div>
-              <div class="ui label">
-                <i class="question icon"></i> {event.reviewCount}
-              </div>
-              <div class="ui label">
-                <i class="x icon"></i> {event.fakeCount}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Timeline>
+        {timelineItems}
+      </Timeline>
     </div>
+    
+    // <div style={infoWindowStyle}>
+    //   <div class="ui items">
+    //     <div class="item">
+    //       <div class="content">
+    //         <a class="header">{event.Name}</a>
+    //         <div class="description">WMATA</div>
+    //         <div class="extra">
+    //           <div class="ui label">
+    //             <i class="check icon"></i> {event.confirmCount}
+    //           </div>
+    //           <div class="ui label">
+    //             <i class="question icon"></i> {event.reviewCount}
+    //           </div>
+    //           <div class="ui label">
+    //             <i class="x icon"></i> {event.fakeCount}
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
