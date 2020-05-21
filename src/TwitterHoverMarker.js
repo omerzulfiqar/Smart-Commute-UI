@@ -27,7 +27,7 @@ const InfoWindow = props => {
   };
 
   var stories = event.stories;
-  console.log(event.stories)
+  
   var timelineItems = []
   if (stories.length > 0) {
     timelineItems = stories.map((story) => {
@@ -38,7 +38,7 @@ const InfoWindow = props => {
       <Timeline.Item> No incidents </Timeline.Item>
     )
   }
-  console.log(timelineItems)
+  
 
   // if (events.length > 0) {
   //   stories = events[0].stories.map(story => (
