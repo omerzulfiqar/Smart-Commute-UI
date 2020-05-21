@@ -19,6 +19,7 @@ import {
 
 import isMobile from "ismobilejs";
 import _ from "lodash";
+import RealtimeMonitor from "./RealtimeMonitor";
 
 class MainPage extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class MainPage extends Component {
       mobileShowIncidentList: false,
       selectedStation: "E02",
       isDrawerOpened: false,
+      isMonitorOpened: true,
     };
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onStationClick = this.onStationClick.bind(this);
@@ -249,6 +251,7 @@ class MainPage extends Component {
               className="bp3-minimal"
               icon="desktop"
               text="Real-time incidents"
+              onClick={() => this.setState({ isMonitorOpened: !this.state.isMonitorOpened })}
             />
             <Button
               className="bp3-minimal"
@@ -271,6 +274,7 @@ class MainPage extends Component {
             onNodeExpand={this.handleNodeExpand}
           />
         </Drawer>
+        <RealtimeMonitor isOpen={this.state.isMonitorOpened}></RealtimeMonitor>
       </div>
 
       // <div>
