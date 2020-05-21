@@ -14,9 +14,8 @@ export default class RealtimeMonitor extends Component {
 
   componentDidMount() {
     const eventsRef = firebase.database().ref("tweets");
-    eventsRef.on("child_added", (snapshot) => {
+    eventsRef.endAt().limitToLast(5).on("child_added", (snapshot) => {
       let newEvents = snapshot.val();
-
       this.state.events.unshift(newEvents.text);
       if (this.state.events.length > 5) {
         this.state.events.pop();
