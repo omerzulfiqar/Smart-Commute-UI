@@ -20,10 +20,6 @@ class IncidentMap extends Component {
     };
   }
 
-  updateDimensions = () => {
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
-  };
-
   onChildClick = key => {
     this.props.onStationClick(key, false);
     this.props.events.forEach(event => {
@@ -47,14 +43,6 @@ class IncidentMap extends Component {
     const index = this.props.events.findIndex(e => e.Code === key);
     this.props.events[index].show = false;
   };
-
-  componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-  }
 
   render() {
     return (
