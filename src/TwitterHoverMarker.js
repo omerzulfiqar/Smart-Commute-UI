@@ -101,7 +101,7 @@ export default class TwitterHoverMarker extends Component {
 
   showInfoWindow() {
     if (!this.props.event.visible) return false;
-    return this.isPWA() ? this.props.event.lock : this.props.event.show;
+    return this.isPWA() ? this.props.event.lock : this.props.event.show || this.props.event.lock;
   }
 
   getIcon() {
