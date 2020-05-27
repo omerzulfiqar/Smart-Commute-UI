@@ -14,7 +14,7 @@ import {
   NavbarHeading,
   Drawer,
   Position,
-  Tree
+  Tree,
 } from "@blueprintjs/core";
 
 import isMobile from "ismobilejs";
@@ -117,7 +117,7 @@ class MainPage extends Component {
 
   handleNodeClick = (nodeData, _nodePath, e) => {
     if (nodeData.hasCaret) {
-      return
+      return;
     }
 
     const originallySelected = nodeData.isSelected;
@@ -127,9 +127,8 @@ class MainPage extends Component {
     nodeData.isSelected =
       originallySelected == null ? true : !originallySelected;
 
-    this.setState({isDrawerOpened: false})
-    
-    this.onStationClick(nodeData.id)
+    this.setState({ isDrawerOpened: false });
+    this.onStationClick(nodeData.id);
   };
 
   handleNodeCollapse = (nodeData) => {
@@ -173,9 +172,7 @@ class MainPage extends Component {
   };
 
   onStationClick(stationId, moveToStation = true) {
-    if (!isMobile(navigator.userAgent).any) {
-      // this.child.current.updateStation(stationId);
-    } else {
+    if (isMobile(navigator.userAgent).any) {
       this.setState({ selectedStation: stationId });
     }
 
@@ -234,7 +231,7 @@ class MainPage extends Component {
       usePortal: true,
     };
 
-    return (
+    const layout = (
       <div>
         <IncidentMap
           events={this.state.events}
@@ -251,7 +248,9 @@ class MainPage extends Component {
               className="bp3-minimal"
               icon="desktop"
               text="Real-time incidents"
-              onClick={() => this.setState({ isMonitorOpened: !this.state.isMonitorOpened })}
+              onClick={() =>
+                this.setState({ isMonitorOpened: !this.state.isMonitorOpened })
+              }
             />
             <Button
               className="bp3-minimal"
@@ -276,46 +275,44 @@ class MainPage extends Component {
         </Drawer>
         <RealtimeMonitor isOpen={this.state.isMonitorOpened}></RealtimeMonitor>
       </div>
-
-      // <div>
-      //   {isMobile(navigator.userAgent).any ? (
-      //     <MobilIncidentList
-      //       events={this.state.events}
-      //       stories={this.state.stories}
-      //       onUpdate={events => this.setState({ events: events })}
-      //       onStationListClick={this.onStationListClick}
-      //       onIncidentListClick={this.onIncidentListClick}
-      //     />
-      //   ) : (
-      //     <div>
-      //       <Stroyline events={this.state.events} ref={this.child} />
-      // <StationList
-      //   events={this.state.events}
-      //   onMarkerClick={this.onMarkerClick}
-      //   onUpdate={events => this.setState({ events: events })}
-      //   onStationClick={this.onStationClick}
-      // />
-      //     </div>
-      //   )}
-      //   {this.state.mobileShowIncidentList && (
-      //     <MobileStoryline
-      //       selectedStation={this.state.selectedStation}
-      //       events={this.state.events}
-      //       ref={this.child}
-      //       onListClose={this.onListClose}
-      //     />
-      //   )}
-      //   {this.state.mobileShowStationList && (
-      //     <MobileStationList
-      //       events={this.state.events}
-      //       onMarkerClick={this.onMarkerClick}
-      //       onUpdate={events => this.setState({ events: events })}
-      //       onStationClick={this.onStationClick}
-      //       onListClose={this.onListClose}
-      //     />
-      //   )}
-      // </div>
     );
+
+    const mobileLayout = (
+      <div>
+        <MobilIncidentList
+          events={this.state.events}
+          stories={this.state.stories}
+          onUpdate={(events) => this.setState({ events: events })}
+          onStationListClick={this.onStationListClick}
+          onIncidentListClick={this.onIncidentListClick}
+        />
+        <IncidentMap
+          events={this.state.events}
+          onStationClick={this.onStationClick}
+          newCenter={this.state.newCenter}
+          onUpdate={(events) => this.setState({ center: events })}
+        />
+        {this.state.mobileShowIncidentList && (
+          <MobileStoryline
+            selectedStation={this.state.selectedStation}
+            events={this.state.events}
+            ref={this.child}
+            onListClose={this.onListClose}
+          />
+        )}
+        {this.state.mobileShowStationList && (
+          <MobileStationList
+            events={this.state.events}
+            onMarkerClick={this.onMarkerClick}
+            onUpdate={(events) => this.setState({ events: events })}
+            onStationClick={this.onStationClick}
+            onListClose={this.onListClose}
+          />
+        )}
+      </div>
+    );
+
+    return isMobile(navigator.userAgent).any ? mobileLayout : layout;
   }
 }
 
