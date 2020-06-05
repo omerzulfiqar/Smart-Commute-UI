@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^3.26.1",
+    "@blueprintjs/datetime": "^3.18.1",
     "antd": "^4.2.0",
     "cra-append-sw": "^2.7.0",
     "firebase": "^7.14.2",

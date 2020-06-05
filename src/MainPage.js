@@ -17,7 +17,10 @@ import {
   Tree,
   Dialog,
   Classes,
+  ControlGroup,
 } from "@blueprintjs/core";
+
+import { DateInput } from "@blueprintjs/datetime";
 
 import isMobile from "ismobilejs";
 import _ from "lodash";
@@ -37,6 +40,7 @@ class MainPage extends Component {
       isMonitorOpened: true,
       isDialogOpened: false,
       allEvents: [],
+      filterData: [],
       displayEvents: [],
     };
     this.onMarkerClick = this.onMarkerClick.bind(this);
@@ -84,9 +88,17 @@ class MainPage extends Component {
     fetch(process.env.REACT_APP_EVENT_API)
       .then((response) => response.json())
       .then((data) => {
+        data.events.forEach((event) => {
+          if ("created_at" in event) {
+            event.date = new Date(parseInt(event.created_at));
+          } else {
+            event.date = new Date(event.date);
+          }
+        });
         let allEvents = data.events.reverse();
         this.setState({
           allEvents: allEvents,
+          filterData: allEvents,
           displayEvents: allEvents.slice(0, 10),
         });
       });
@@ -166,10 +178,6 @@ class MainPage extends Component {
     this.setState({ mobileShowIncidentList: true });
   };
 
-  // onListClick = () => {
-  //   this.setState({ mobileShowList: true });
-  // };
-
   onListClose = () => {
     this.setState({
       mobileShowStationList: false,
@@ -227,10 +235,7 @@ class MainPage extends Component {
   handlePageChange(page) {
     let startIndex = (page - 1) * 10;
     this.setState({
-      displayEvents: this.state.allEvents.slice(
-        startIndex,
-        startIndex + 10
-      ),
+      displayEvents: this.state.filterData.slice(startIndex, startIndex + 10),
     });
   }
 
@@ -251,6 +256,12 @@ class MainPage extends Component {
       width: "80%",
     };
 
+    const filterGroupStyle = {
+      marginTop: 20,
+      marginLeft: 20,
+      marginRight: 20,
+    };
+
     const layout = (
       <div>
         <IncidentMap
@@ -266,8 +277,42 @@ class MainPage extends Component {
           isOpen={this.state.isDialogOpened}
           usePortal={true}
           style={dialogStyle}
-          onClose={() => this.setState({ isDialogOpened: false })}
+          onClose={() =>
+            this.setState({
+              isDialogOpened: false,
+              filterData: this.state.allEvents,
+              displayEvents: this.state.allEvents.slice(0, 10),
+            })
+          }
         >
+          <div style={filterGroupStyle}>
+            <ControlGroup>
+              <DateInput
+                formatDate={(date) => date.toLocaleDateString()}
+                parseDate={(str) => new Date(str)}
+                shortcuts={true}
+                onChange={(date, isUserChange) => {
+                  var filterData;
+                  if (date === null) {
+                    filterData = this.state.allEvents;
+                  } else {
+                    filterData = this.state.allEvents.filter((a) => {
+                      return (
+                        a.date.toLocaleDateString() ===
+                        date.toLocaleDateString()
+                      );
+                    });
+                  }
+
+                  this.setState({
+                    filterData: filterData,
+                    displayEvents: filterData.slice(0, 10),
+                  });
+                }}
+                placeholder="Filter by date"
+              />
+            </ControlGroup>
+          </div>
           <div className={Classes.DIALOG_BODY}>
             <Table celled>
               <Table.Header>
@@ -277,7 +322,7 @@ class MainPage extends Component {
               </Table.Header>
               {this.state.displayEvents.map((e) => (
                 <Table.Row>
-                  <Table.Cell>{this.getFormatedDate(e)}</Table.Cell>
+                  <Table.Cell>{e.date.toLocaleString("en-US")}</Table.Cell>
                   <Table.Cell>{e.label}</Table.Cell>
                   <Table.Cell>{e.message}</Table.Cell>
                 </Table.Row>
@@ -291,9 +336,7 @@ class MainPage extends Component {
                       onPageChange={(e, { activePage }) => {
                         this.handlePageChange(activePage);
                       }}
-                      totalPages={Math.floor(
-                        this.state.allEvents.length / 10
-                      )}
+                      totalPages={Math.floor(this.state.filterData.length / 10)}
                     />
                   </Table.HeaderCell>
                 </Table.Row>
