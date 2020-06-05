@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import IncidentMap from "./IncidentMap";
-import Stroyline from "./Storyline";
 import MobileStoryline from "./MobileStoryline";
-import StationList from "./StationList";
 import MobileStationList from "./MobileStationList";
 import MobilIncidentList from "./MobilIncidentList";
+import { Table, Pagination } from "semantic-ui-react";
+
 import {
   Alignment,
   Button,
@@ -15,6 +15,8 @@ import {
   Drawer,
   Position,
   Tree,
+  Dialog,
+  Classes,
 } from "@blueprintjs/core";
 
 import isMobile from "ismobilejs";
@@ -33,6 +35,9 @@ class MainPage extends Component {
       selectedStation: "E02",
       isDrawerOpened: false,
       isMonitorOpened: true,
+      isDialogOpened: false,
+      allEvents: [],
+      displayEvents: [],
     };
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onStationClick = this.onStationClick.bind(this);
@@ -41,7 +46,7 @@ class MainPage extends Component {
 
   componentDidMount() {
     var stories = [];
-    fetch(process.env.REACT_APP_EVENT_API)
+    fetch(process.env.REACT_APP_STATION_API)
       .then((response) => response.json())
       .then((data) => {
         var lines = {};
@@ -51,15 +56,6 @@ class MainPage extends Component {
           result.visible = true;
           result.forceHover = false;
           result.category = "Metro";
-          result.confirmCount = result.stories.filter(
-            (story) => story.status === 1
-          ).length;
-          result.reviewCount = result.stories.filter(
-            (story) => story.status === 0
-          ).length;
-          result.fakeCount = result.stories.filter(
-            (story) => story.status === 2
-          ).length;
 
           if (result.LineCode1 != null) {
             this.addToLineMap(lines, result.LineCode1, result);
@@ -82,6 +78,16 @@ class MainPage extends Component {
           events: data.Stations,
           stories: stories,
           lineNodes: this.createLineNodes(lines),
+        });
+      });
+
+    fetch(process.env.REACT_APP_EVENT_API)
+      .then((response) => response.json())
+      .then((data) => {
+        let allEvents = data.events.reverse();
+        this.setState({
+          allEvents: allEvents,
+          displayEvents: allEvents.slice(0, 10),
         });
       });
   }
@@ -210,15 +216,25 @@ class MainPage extends Component {
     });
   }
 
-  render() {
-    const listStyle = {
-      position: "absolute",
-      zIndex: "10000000000",
-      overflowY: "hidden",
-      overflowX: "hidden",
-      background: "white",
-    };
+  getFormatedDate(event) {
+    if ("created_at" in event) {
+      return new Date(parseInt(event.created_at)).toLocaleString("en-US");
+    } else {
+      return event.date;
+    }
+  }
 
+  handlePageChange(page) {
+    let startIndex = (page - 1) * 10;
+    this.setState({
+      displayEvents: this.state.allEvents.slice(
+        startIndex,
+        startIndex + 10
+      ),
+    });
+  }
+
+  render() {
     const drawerState = {
       autoFocus: true,
       canEscapeKeyClose: true,
@@ -231,6 +247,10 @@ class MainPage extends Component {
       usePortal: true,
     };
 
+    const dialogStyle = {
+      width: "80%",
+    };
+
     const layout = (
       <div>
         <IncidentMap
@@ -239,6 +259,48 @@ class MainPage extends Component {
           newCenter={this.state.newCenter}
           onUpdate={(events) => this.setState({ center: events })}
         />
+
+        <Dialog
+          icon="info-sign"
+          title="All events"
+          isOpen={this.state.isDialogOpened}
+          usePortal={true}
+          style={dialogStyle}
+          onClose={() => this.setState({ isDialogOpened: false })}
+        >
+          <div className={Classes.DIALOG_BODY}>
+            <Table celled>
+              <Table.Header>
+                <Table.HeaderCell>Date</Table.HeaderCell>
+                <Table.HeaderCell>Category</Table.HeaderCell>
+                <Table.HeaderCell>Text</Table.HeaderCell>
+              </Table.Header>
+              {this.state.displayEvents.map((e) => (
+                <Table.Row>
+                  <Table.Cell>{this.getFormatedDate(e)}</Table.Cell>
+                  <Table.Cell>{e.label}</Table.Cell>
+                  <Table.Cell>{e.message}</Table.Cell>
+                </Table.Row>
+              ))}
+              <Table.Footer>
+                <Table.Row>
+                  <Table.HeaderCell colSpan="3">
+                    <Pagination
+                      floated="right"
+                      defaultActivePage={1}
+                      onPageChange={(e, { activePage }) => {
+                        this.handlePageChange(activePage);
+                      }}
+                      totalPages={Math.floor(
+                        this.state.allEvents.length / 10
+                      )}
+                    />
+                  </Table.HeaderCell>
+                </Table.Row>
+              </Table.Footer>
+            </Table>
+          </div>
+        </Dialog>
 
         <Navbar>
           <NavbarGroup align={Alignment.LEFT}>
@@ -250,6 +312,14 @@ class MainPage extends Component {
               text="Real-time incidents"
               onClick={() =>
                 this.setState({ isMonitorOpened: !this.state.isMonitorOpened })
+              }
+            />
+            <Button
+              className="bp3-minimal"
+              icon="panel-table"
+              text="All events"
+              onClick={() =>
+                this.setState({ isDialogOpened: !this.state.isDialogOpened })
               }
             />
             <Button
