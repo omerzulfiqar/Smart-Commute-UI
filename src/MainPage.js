@@ -319,17 +319,28 @@ class MainPage extends Component {
                 <Table.HeaderCell>Date</Table.HeaderCell>
                 <Table.HeaderCell>Category</Table.HeaderCell>
                 <Table.HeaderCell>Text</Table.HeaderCell>
+                <Table.HeaderCell>Link</Table.HeaderCell>
               </Table.Header>
               {this.state.displayEvents.map((e) => (
                 <Table.Row>
                   <Table.Cell>{e.date.toLocaleString("en-US")}</Table.Cell>
                   <Table.Cell>{e.label}</Table.Cell>
                   <Table.Cell>{e.message}</Table.Cell>
+                  <Table.Cell>
+                    {e.url === null ? (
+                      ""
+                    ) : (
+                      <a href={e.url} rel="noopener noreferrer" target="_blank">
+                        {" "}
+                        Source
+                      </a>
+                    )}
+                  </Table.Cell>
                 </Table.Row>
               ))}
               <Table.Footer>
                 <Table.Row>
-                  <Table.HeaderCell colSpan="3">
+                  <Table.HeaderCell colSpan="4">
                     <Pagination
                       floated="right"
                       defaultActivePage={1}

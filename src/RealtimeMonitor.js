@@ -69,10 +69,15 @@ export default class RealtimeMonitor extends Component {
                   </span>
                   <div>
                     {event.text}
-                    <a href={event.url} rel="noopener noreferrer" target="_blank">
-                      {" "}
-                      Source
-                    </a>
+                    {event.url !== undefined && (
+                      <a
+                        href={event.url}
+                        rel="noopener noreferrer"
+                        target="_blank">
+                        {" "}
+                        Source
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
