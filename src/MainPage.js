@@ -18,6 +18,7 @@ import {
   Dialog,
   Classes,
   ControlGroup,
+  Toaster,
 } from "@blueprintjs/core";
 
 import { DateInput } from "@blueprintjs/datetime";
@@ -47,6 +48,11 @@ class MainPage extends Component {
     this.onStationClick = this.onStationClick.bind(this);
     this.child = React.createRef();
   }
+
+  toaster;
+  refHandlers = {
+    toaster: (ref) => (this.toaster = ref),
+  };
 
   componentDidMount() {
     var stories = [];
@@ -397,7 +403,9 @@ class MainPage extends Component {
             onNodeExpand={this.handleNodeExpand}
           />
         </Drawer>
-        <RealtimeMonitor isOpen={this.state.isMonitorOpened}></RealtimeMonitor>
+        <RealtimeMonitor isOpen={this.state.isMonitorOpened} toaster={this.toaster} onStationClick={this.onStationClick} />
+
+        <Toaster {...this.state} ref={this.refHandlers.toaster} position={Position.BOTTOM_RIGHT} />
       </div>
     );
 

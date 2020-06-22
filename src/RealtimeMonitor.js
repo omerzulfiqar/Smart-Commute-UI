@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import FlipMove from "react-flip-move";
 import firebase from "./Firebase";
 
-import { Collapse } from "@blueprintjs/core";
+import { Collapse, Intent } from "@blueprintjs/core";
 import { Label } from "semantic-ui-react";
 
 export default class RealtimeMonitor extends Component {
@@ -19,14 +19,32 @@ export default class RealtimeMonitor extends Component {
       .endAt()
       .limitToLast(5)
       .on("child_added", (snapshot) => {
-        let newEvents = snapshot.val();
-        this.state.events.unshift(newEvents);
+        let newEvent = snapshot.val();
+        this.state.events.unshift(newEvent);
         if (this.state.events.length > 5) {
+          this.showToast(newEvent);
           this.state.events.pop();
         }
 
         this.setState({ events: this.state.events });
       });
+  }
+
+  showToast(event) {
+    // TODO: only show the data related to a station
+
+    var toast = {
+      action: {
+          onClick: () => {this.props.onStationClick("K06", true)},
+          text: "To station",
+      },
+      button: "To station",
+      icon: "warning-sign",
+      intent: Intent.WARNING,
+      message: event.text,
+      timeout: 5000,
+  };
+    this.props.toaster.show(toast)
   }
 
   getFormatedDate(timestamp) {
