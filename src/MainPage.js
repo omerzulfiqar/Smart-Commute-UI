@@ -73,6 +73,7 @@ class MainPage extends Component {
               story.date = new Date(story.date);
             }
           });
+          result.stories = result.stories.reverse();
 
           if (result.LineCode1 != null) {
             this.addToLineMap(lines, result.LineCode1, result);
