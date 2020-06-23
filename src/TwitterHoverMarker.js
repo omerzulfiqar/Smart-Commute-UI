@@ -31,7 +31,7 @@ const InfoWindow = props => {
   var timelineItems = []
   if (stories.length > 0) {
     timelineItems = stories.map((story) => {
-    return <Timeline.Item> {story.message} {story.date}</Timeline.Item>
+    return <Timeline.Item> {story.message} {story.date.toLocaleString("en-US")}</Timeline.Item>
     })
   } else {
     timelineItems.push(

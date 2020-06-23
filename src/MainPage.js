@@ -66,6 +66,13 @@ class MainPage extends Component {
           result.visible = true;
           result.forceHover = false;
           result.category = "Metro";
+          result.stories.forEach((story) => {
+            if ("created_at" in story) {
+              story.date = new Date(parseInt(story.created_at));
+            } else {
+              story.date = new Date(story.date);
+            }
+          });
 
           if (result.LineCode1 != null) {
             this.addToLineMap(lines, result.LineCode1, result);
