@@ -403,9 +403,36 @@ class MainPage extends Component {
             onNodeExpand={this.handleNodeExpand}
           />
         </Drawer>
-        <RealtimeMonitor isOpen={this.state.isMonitorOpened} toaster={this.toaster} onStationClick={this.onStationClick} />
+        <RealtimeMonitor
+          isOpen={this.state.isMonitorOpened}
+          toaster={this.toaster}
+          onStationClick={this.onStationClick}
+          onNewEvent={(event) => {
+            this.state.allEvents.unshift(event);
+            this.state.events
+              .filter((station) => {
+                return (
+                  station.Code === event.code ||
+                  (event.affectedArea !== undefined &&
+                    event.affectedArea.indexOf(station.Code) > -1)
+                );
+              })
+              .forEach((station) => {
+                station.stories.unshift(event);
+              });
 
-        <Toaster {...this.state} ref={this.refHandlers.toaster} position={Position.BOTTOM_RIGHT} />
+            this.setState({
+              filterData: this.state.allEvents,
+              displayEvents: this.state.allEvents.slice(0, 10),
+            });
+          }}
+        />
+
+        <Toaster
+          {...this.state}
+          ref={this.refHandlers.toaster}
+          position={Position.BOTTOM_RIGHT}
+        />
       </div>
     );
 

@@ -20,8 +20,13 @@ export default class RealtimeMonitor extends Component {
       .limitToLast(5)
       .on("child_added", (snapshot) => {
         let newEvent = snapshot.val();
+
         this.state.events.unshift(newEvent);
         if (this.state.events.length > 5) {
+          newEvent.message = newEvent.text;
+          newEvent.date = this.getFormatedDate(newEvent.created_at);
+
+          this.props.onNewEvent(newEvent);
           this.showToast(newEvent);
           this.state.events.pop();
         }
@@ -31,20 +36,28 @@ export default class RealtimeMonitor extends Component {
   }
 
   showToast(event) {
-    // TODO: only show the data related to a station
+    if (event.code === undefined && event.affectedArea === undefined) {
+      return;
+    }
 
     var toast = {
       action: {
-          onClick: () => {this.props.onStationClick("K06", true)},
-          text: "To station",
+        onClick: () => {
+          this.props.onStationClick(
+            event.code !== undefined ? event.code : event.affectedArea[0],
+            true
+          );
+        },
+        text: "To station",
       },
       button: "To station",
       icon: "warning-sign",
       intent: Intent.WARNING,
       message: event.text,
       timeout: 5000,
-  };
-    this.props.toaster.show(toast)
+    };
+
+    this.props.toaster.show(toast);
   }
 
   getFormatedDate(timestamp) {
@@ -91,7 +104,8 @@ export default class RealtimeMonitor extends Component {
                       <a
                         href={event.url}
                         rel="noopener noreferrer"
-                        target="_blank">
+                        target="_blank"
+                      >
                         {" "}
                         Source
                       </a>
