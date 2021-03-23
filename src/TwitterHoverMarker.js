@@ -25,7 +25,6 @@ const InfoWindow = props => {
 
   return (
     <div style={infoWindowStyle}>
-      {/* <div style={{ fontSize: 14, color: "#5b8b92" }}>{event.Name}</div> */}
       <div class="ui items">
         <div class="item">
           <div class="content">
@@ -33,13 +32,13 @@ const InfoWindow = props => {
             <div class="description">WMATA</div>
             <div class="extra">
               <div class="ui label">
-                <i class="check icon"></i> 1
+                <i class="check icon"></i> {event.confirmCount}
               </div>
               <div class="ui label">
-                <i class="question icon"></i> 3
+                <i class="question icon"></i> {event.reviewCount}
               </div>
               <div class="ui label">
-                <i class="x icon"></i> 0
+                <i class="x icon"></i> {event.fakeCount}
               </div>
             </div>
           </div>
